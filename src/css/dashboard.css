@@ -1,0 +1,262 @@
+/* ================================================================
+   dashboard.css — Estilos exclusivos del Dashboard Estudiante
+   HU-23: Mis Grupos · Desafíos Pendientes · Puntaje/Progreso
+   ================================================================ */
+
+
+/* ── Contenedor principal del dashboard ──────────────────────── */
+.dashboard {
+    padding: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    flex: 1;
+}
+
+
+/* ================================================================
+   BIENVENIDA
+================================================================ */
+.dashboard__welcome {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-md);
+}
+
+.dashboard__welcome-text h2 {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    line-height: 1.2;
+}
+.dashboard__welcome-text p {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    margin-top: 4px;
+}
+.dashboard__welcome-text strong {
+    color: var(--color-purple-600);
+    font-weight: 600;
+}
+
+.dashboard__welcome-date {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: 13px;
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+}
+.dashboard__welcome-date i { font-size: 15px; }
+
+
+/* ================================================================
+   MÉTRICAS (4 KPIs en fila)
+================================================================ */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-md);
+}
+
+@media (max-width: 1100px) {
+    .metrics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+/* ================================================================
+   GRID PRINCIPAL DE BLOQUES
+================================================================ */
+.dashboard__grid {
+    display: grid;
+    /* 2 columnas iguales para Grupos y Desafíos; Progreso es full */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-lg);
+}
+
+@media (max-width: 900px) {
+    .dashboard__grid {
+        grid-template-columns: 1fr;
+    }
+    .card--full {
+        grid-column: 1;
+    }
+}
+
+
+/* ================================================================
+   BLOQUE 3: PANEL DE PUNTAJE Y PROGRESO
+================================================================ */
+.progress-panel {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: var(--space-2xl);
+    align-items: start;
+}
+
+@media (max-width: 860px) {
+    .progress-panel {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* ── Anillo de puntaje ───────────────────────────────────────── */
+.score-ring-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.score-ring {
+    position: relative;
+    width: 120px;
+    height: 120px;
+}
+
+/* Animación de entrada del progreso del anillo */
+.ring-progress {
+    transform-origin: center;
+    transform: rotate(-90deg);
+    animation: ring-in 1s ease-out forwards;
+}
+@keyframes ring-in {
+    from { stroke-dasharray: 0 314; }
+    to   { stroke-dasharray: 213 101; }
+}
+
+.score-ring__center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.score-ring__value {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    line-height: 1;
+}
+.score-ring__label {
+    font-size: 11px;
+    color: var(--color-text-muted);
+    font-weight: 400;
+}
+
+.score-ring__caption {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    text-align: center;
+}
+
+
+/* ── Barras de progreso por materia ─────────────────────────── */
+.subject-progress {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-lg);
+}
+
+.subject-bar__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 6px;
+}
+.subject-bar__name {
+    font-size: 13px;
+    font-weight: 500;
+}
+.subject-bar__pct {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+}
+
+.subject-bar__track {
+    height: 8px;
+    background: var(--color-border);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+.subject-bar__fill {
+    height: 100%;
+    border-radius: var(--radius-full);
+    animation: bar-in 0.8s ease-out forwards;
+    transform-origin: left;
+}
+@keyframes bar-in {
+    from { width: 0 !important; }
+}
+
+/* Colores de barras */
+.subject-bar__fill--purple { background: var(--color-purple-600); }
+.subject-bar__fill--teal   { background: var(--color-teal-200); }
+
+
+/* ── Logros recientes ────────────────────────────────────────── */
+.achievements__title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-sm);
+}
+
+.achievements__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.achievement-badge {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: 6px 12px;
+    border-radius: var(--radius-md);
+    font-size: 12px;
+    font-weight: 500;
+}
+.achievement-badge i { font-size: 15px; }
+
+.achievement-badge--gold {
+    background: var(--color-amber-50);
+    color: var(--color-amber-600);
+}
+.achievement-badge--blue {
+    background: var(--color-blue-50);
+    color: var(--color-blue-600);
+}
+.achievement-badge--teal {
+    background: var(--color-teal-50);
+    color: var(--color-teal-600);
+}
+
+
+/* ================================================================
+   RESPONSIVE GLOBAL DEL DASHBOARD
+================================================================ */
+@media (max-width: 768px) {
+    .dashboard {
+        padding: var(--space-md);
+        gap: var(--space-md);
+    }
+    .dashboard__welcome h2 {
+        font-size: 20px;
+    }
+    .dashboard__welcome-date {
+        display: none;
+    }
+}

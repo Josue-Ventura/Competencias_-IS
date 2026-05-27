@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Estudiante | EduSystem</title>
+
+    <!-- Google Fonts: DM Sans (UI) + Playfair Display (display) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+
+    <!-- Tabler Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" />
+
+    <!-- Estilos principales -->
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body>
+
+<!-- ========================================================
+     SIDEBAR / MENÚ LATERAL
+     Navegación principal del sistema. Estructura idéntica
+     a la vista del Profesor para mantener consistencia de diseño.
+======================================================== -->
+<aside class="sidebar" id="sidebar">
+
+    <!-- Logotipo y nombre del sistema -->
+    <div class="sidebar__brand">
+        <div class="sidebar__logo" aria-hidden="true">
+            <i class="ti ti-school"></i>
+        </div>
+        <span class="sidebar__title">EduSystem</span>
+    </div>
+
+    <!-- Separador -->
+    <div class="sidebar__divider"></div>
+
+    <!-- Menú de navegación principal -->
+    <nav class="sidebar__nav" aria-label="Menú principal">
+        <ul class="sidebar__menu">
+
+            <!-- ACTIVO: Dashboard -->
+            <li class="sidebar__item sidebar__item--active">
+                <a href="index.html" class="sidebar__link" aria-current="page">
+                    <i class="ti ti-layout-dashboard" aria-hidden="true"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <!-- Mis Grupos -->
+            <li class="sidebar__item">
+                <a href="pages/grupos.html" class="sidebar__link">
+                    <i class="ti ti-users-group" aria-hidden="true"></i>
+                    <span>Mis Grupos</span>
+                </a>
+            </li>
+
+            <!-- Desafíos -->
+            <li class="sidebar__item">
+                <a href="pages/desafios.html" class="sidebar__link">
+                    <i class="ti ti-trophy" aria-hidden="true"></i>
+                    <span>Desafíos</span>
+                    <!-- Badge de notificación -->
+                    <span class="badge badge--danger">3</span>
+                </a>
+            </li>
+
+            <!-- Recursos / Biblioteca -->
+            <li class="sidebar__item">
+                <a href="pages/recursos.html" class="sidebar__link">
+                    <i class="ti ti-books" aria-hidden="true"></i>
+                    <span>Recursos</span>
+                </a>
+            </li>
+
+            <!-- Calificaciones -->
+            <li class="sidebar__item">
+                <a href="pages/calificaciones.html" class="sidebar__link">
+                    <i class="ti ti-chart-bar" aria-hidden="true"></i>
+                    <span>Calificaciones</span>
+                </a>
+            </li>
+
+            <!-- Mensajes -->
+            <li class="sidebar__item">
+                <a href="pages/mensajes.html" class="sidebar__link">
+                    <i class="ti ti-message-circle" aria-hidden="true"></i>
+                    <span>Mensajes</span>
+                    <span class="badge badge--info">2</span>
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+
+    <!-- Separador inferior -->
+    <div class="sidebar__divider sidebar__divider--bottom"></div>
+
+    <!-- Sección de perfil del usuario en sidebar -->
+    <div class="sidebar__profile">
+        <div class="sidebar__avatar" aria-hidden="true">AG</div>
+        <div class="sidebar__user-info">
+            <p class="sidebar__user-name">Ana García</p>
+            <p class="sidebar__user-role">Estudiante</p>
+        </div>
+        <a href="pages/configuracion.html" class="sidebar__settings-btn" aria-label="Configuración de perfil">
+            <i class="ti ti-settings" aria-hidden="true"></i>
+        </a>
+    </div>
+
+</aside>
+<!-- /SIDEBAR -->
+
+
+<!-- ========================================================
+     CONTENIDO PRINCIPAL
+======================================================== -->
+<main class="main-content" id="main-content">
+
+    <!-- TOPBAR: barra superior con saludo y acciones globales -->
+    <header class="topbar">
+        <!-- Botón hamburguesa (mobile) -->
+        <button class="topbar__menu-toggle" id="menuToggle" aria-label="Abrir menú lateral">
+            <i class="ti ti-menu-2" aria-hidden="true"></i>
+        </button>
+
+        <!-- Título de página -->
+        <div class="topbar__title">
+            <h1>Dashboard</h1>
+            <p class="topbar__breadcrumb">Inicio &rsaquo; Dashboard</p>
+        </div>
+
+        <!-- Acciones del topbar -->
+        <div class="topbar__actions">
+            <!-- Buscador rápido -->
+            <div class="topbar__search">
+                <i class="ti ti-search" aria-hidden="true"></i>
+                <input type="search" placeholder="Buscar recursos..." aria-label="Buscar en el sistema" />
+            </div>
+
+            <!-- Notificaciones -->
+            <button class="topbar__icon-btn" aria-label="Notificaciones (5 sin leer)">
+                <i class="ti ti-bell" aria-hidden="true"></i>
+                <span class="topbar__notif-dot" aria-hidden="true"></span>
+            </button>
+        </div>
+    </header>
+    <!-- /TOPBAR -->
+
+
+    <!-- ======================================================
+         CUERPO DEL DASHBOARD
+    ====================================================== -->
+    <div class="dashboard">
+
+        <!-- Saludo personalizado -->
+        <section class="dashboard__welcome" aria-label="Saludo">
+            <div class="dashboard__welcome-text">
+                <h2>¡Bienvenida, Ana!</h2>
+                <p>Tienes <strong>3 desafíos pendientes</strong> y <strong>2 grupos activos</strong> hoy.</p>
+            </div>
+            <div class="dashboard__welcome-date" aria-label="Fecha actual">
+                <i class="ti ti-calendar" aria-hidden="true"></i>
+                <span id="currentDate"></span>
+            </div>
+        </section>
+
+        <!-- ────────────────────────────────────────────────────
+             TARJETAS DE MÉTRICAS (KPI rápidos)
+        ──────────────────────────────────────────────────── -->
+        <section class="metrics-grid" aria-label="Métricas rápidas">
+
+            <article class="metric-card metric-card--groups">
+                <div class="metric-card__icon" aria-hidden="true">
+                    <i class="ti ti-users-group"></i>
+                </div>
+                <div class="metric-card__body">
+                    <p class="metric-card__label">Grupos activos</p>
+                    <p class="metric-card__value">2</p>
+                </div>
+            </article>
+
+            <article class="metric-card metric-card--challenges">
+                <div class="metric-card__icon" aria-hidden="true">
+                    <i class="ti ti-trophy"></i>
+                </div>
+                <div class="metric-card__body">
+                    <p class="metric-card__label">Desafíos pendientes</p>
+                    <p class="metric-card__value">3</p>
+                </div>
+            </article>
+
+            <article class="metric-card metric-card--score">
+                <div class="metric-card__icon" aria-hidden="true">
+                    <i class="ti ti-star"></i>
+                </div>
+                <div class="metric-card__body">
+                    <p class="metric-card__label">Puntaje total</p>
+                    <p class="metric-card__value">1,240</p>
+                </div>
+            </article>
+
+            <article class="metric-card metric-card--progress">
+                <div class="metric-card__icon" aria-hidden="true">
+                    <i class="ti ti-chart-line"></i>
+                </div>
+                <div class="metric-card__body">
+                    <p class="metric-card__label">Progreso global</p>
+                    <p class="metric-card__value">68%</p>
+                </div>
+            </article>
+
+        </section>
+        <!-- /MÉTRICAS -->
+
+
+        <!-- ────────────────────────────────────────────────────
+             SECCIÓN PRINCIPAL: 3 BLOQUES (2 columnas)
+        ──────────────────────────────────────────────────── -->
+        <div class="dashboard__grid">
+
+            <!-- ================================================
+                 BLOQUE 1: MIS GRUPOS
+            ================================================ -->
+            <section class="card" aria-labelledby="grupos-title">
+                <div class="card__header">
+                    <div class="card__header-left">
+                        <i class="ti ti-users-group card__header-icon" aria-hidden="true"></i>
+                        <h3 id="grupos-title">Mis Grupos</h3>
+                    </div>
+                    <a href="pages/grupos.html" class="card__link">
+                        Ver todos <i class="ti ti-arrow-right" aria-hidden="true"></i>
+                    </a>
+                </div>
+
+                <div class="card__body">
+                    <ul class="group-list" aria-label="Lista de grupos">
+
+                        <!-- Grupo 1 -->
+                        <li class="group-item">
+                            <div class="group-item__avatar group-item__avatar--purple" aria-hidden="true">M</div>
+                            <div class="group-item__info">
+                                <p class="group-item__name">Matemáticas Avanzadas</p>
+                                <p class="group-item__meta">
+                                    <i class="ti ti-user" aria-hidden="true"></i> Prof. Ramírez
+                                    &nbsp;·&nbsp;
+                                    <i class="ti ti-users" aria-hidden="true"></i> 28 alumnos
+                                </p>
+                            </div>
+                            <a href="pages/grupos.html#grupo-1" class="btn btn--ghost btn--sm">
+                                Entrar
+                            </a>
+                        </li>
+
+                        <!-- Grupo 2 -->
+                        <li class="group-item">
+                            <div class="group-item__avatar group-item__avatar--teal" aria-hidden="true">F</div>
+                            <div class="group-item__info">
+                                <p class="group-item__name">Física General II</p>
+                                <p class="group-item__meta">
+                                    <i class="ti ti-user" aria-hidden="true"></i> Prof. Torres
+                                    &nbsp;·&nbsp;
+                                    <i class="ti ti-users" aria-hidden="true"></i> 32 alumnos
+                                </p>
+                            </div>
+                            <a href="pages/grupos.html#grupo-2" class="btn btn--ghost btn--sm">
+                                Entrar
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </section>
+            <!-- /MIS GRUPOS -->
+
+
+            <!-- ================================================
+                 BLOQUE 2: DESAFÍOS PENDIENTES
+            ================================================ -->
+            <section class="card" aria-labelledby="desafios-title">
+                <div class="card__header">
+                    <div class="card__header-left">
+                        <i class="ti ti-trophy card__header-icon" aria-hidden="true"></i>
+                        <h3 id="desafios-title">Desafíos Pendientes</h3>
+                    </div>
+                    <a href="pages/desafios.html" class="card__link">
+                        Ver todos <i class="ti ti-arrow-right" aria-hidden="true"></i>
+                    </a>
+                </div>
+
+                <div class="card__body">
+                    <ul class="challenge-list" aria-label="Lista de desafíos pendientes">
+
+                        <!-- Desafío 1: urgente -->
+                        <li class="challenge-item">
+                            <div class="challenge-item__left">
+                                <span class="priority-dot priority-dot--high" title="Prioridad alta" aria-label="Urgente"></span>
+                                <div class="challenge-item__info">
+                                    <p class="challenge-item__name">Derivadas e integrales</p>
+                                    <p class="challenge-item__meta">
+                                        <i class="ti ti-clock" aria-hidden="true"></i> Vence mañana
+                                        &nbsp;·&nbsp; 150 pts
+                                    </p>
+                                </div>
+                            </div>
+                            <a href="pages/desafios.html#d1" class="btn btn--primary btn--sm">
+                                Iniciar
+                            </a>
+                        </li>
+
+                        <!-- Desafío 2: próximo -->
+                        <li class="challenge-item">
+                            <div class="challenge-item__left">
+                                <span class="priority-dot priority-dot--medium" title="Prioridad media" aria-label="Esta semana"></span>
+                                <div class="challenge-item__info">
+                                    <p class="challenge-item__name">Leyes de Newton</p>
+                                    <p class="challenge-item__meta">
+                                        <i class="ti ti-clock" aria-hidden="true"></i> 3 días restantes
+                                        &nbsp;·&nbsp; 200 pts
+                                    </p>
+                                </div>
+                            </div>
+                            <a href="pages/desafios.html#d2" class="btn btn--ghost btn--sm">
+                                Iniciar
+                            </a>
+                        </li>
+
+                        <!-- Desafío 3 -->
+                        <li class="challenge-item">
+                            <div class="challenge-item__left">
+                                <span class="priority-dot priority-dot--low" title="Prioridad baja" aria-label="Sin urgencia"></span>
+                                <div class="challenge-item__info">
+                                    <p class="challenge-item__name">Álgebra lineal: matrices</p>
+                                    <p class="challenge-item__meta">
+                                        <i class="ti ti-clock" aria-hidden="true"></i> 7 días restantes
+                                        &nbsp;·&nbsp; 120 pts
+                                    </p>
+                                </div>
+                            </div>
+                            <a href="pages/desafios.html#d3" class="btn btn--ghost btn--sm">
+                                Iniciar
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </section>
+            <!-- /DESAFÍOS PENDIENTES -->
+
+
+            <!-- ================================================
+                 BLOQUE 3: PUNTAJE Y PROGRESO
+                 Ocupa el ancho completo de la segunda fila
+            ================================================ -->
+            <section class="card card--full" aria-labelledby="puntaje-title">
+                <div class="card__header">
+                    <div class="card__header-left">
+                        <i class="ti ti-chart-bar card__header-icon" aria-hidden="true"></i>
+                        <h3 id="puntaje-title">Puntaje &amp; Progreso</h3>
+                    </div>
+                    <a href="pages/calificaciones.html" class="card__link">
+                        Ver detalle <i class="ti ti-arrow-right" aria-hidden="true"></i>
+                    </a>
+                </div>
+
+                <div class="card__body">
+                    <div class="progress-panel">
+
+                        <!-- Puntaje total con anillo visual -->
+                        <div class="score-ring-wrapper">
+                            <div class="score-ring" role="img" aria-label="Puntaje total: 1240 puntos">
+                                <svg viewBox="0 0 120 120" width="120" height="120" aria-hidden="true">
+                                    <!-- Pista de fondo -->
+                                    <circle cx="60" cy="60" r="50" fill="none" stroke="var(--ring-track)" stroke-width="10"/>
+                                    <!-- Progreso (68% = 213deg de 314 circunferencia) -->
+                                    <circle
+                                            cx="60" cy="60" r="50"
+                                            fill="none"
+                                            stroke="var(--ring-fill)"
+                                            stroke-width="10"
+                                            stroke-linecap="round"
+                                            stroke-dasharray="213 101"
+                                            stroke-dashoffset="78"
+                                            class="ring-progress"
+                                    />
+                                </svg>
+                                <div class="score-ring__center">
+                                    <p class="score-ring__value">1,240</p>
+                                    <p class="score-ring__label">pts</p>
+                                </div>
+                            </div>
+                            <p class="score-ring__caption">Puntaje acumulado</p>
+                        </div>
+
+                        <!-- Barras de progreso por materia -->
+                        <div class="subject-progress">
+
+                            <div class="subject-bar">
+                                <div class="subject-bar__header">
+                                    <span class="subject-bar__name">Matemáticas Avanzadas</span>
+                                    <span class="subject-bar__pct">78%</span>
+                                </div>
+                                <div class="subject-bar__track" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso en Matemáticas: 78%">
+                                    <div class="subject-bar__fill subject-bar__fill--purple" style="width: 78%"></div>
+                                </div>
+                            </div>
+
+                            <div class="subject-bar">
+                                <div class="subject-bar__header">
+                                    <span class="subject-bar__name">Física General II</span>
+                                    <span class="subject-bar__pct">57%</span>
+                                </div>
+                                <div class="subject-bar__track" role="progressbar" aria-valuenow="57" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso en Física: 57%">
+                                    <div class="subject-bar__fill subject-bar__fill--teal" style="width: 57%"></div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Logros recientes -->
+                        <div class="achievements">
+                            <p class="achievements__title">Logros recientes</p>
+                            <div class="achievements__list">
+
+                                <div class="achievement-badge achievement-badge--gold" title="Primera entrega completa">
+                                    <i class="ti ti-medal" aria-hidden="true"></i>
+                                    <span>Primera entrega</span>
+                                </div>
+
+                                <div class="achievement-badge achievement-badge--blue" title="Racha de 7 días">
+                                    <i class="ti ti-flame" aria-hidden="true"></i>
+                                    <span>Racha 7 días</span>
+                                </div>
+
+                                <div class="achievement-badge achievement-badge--teal" title="Puntaje perfecto en un desafío">
+                                    <i class="ti ti-star" aria-hidden="true"></i>
+                                    <span>Puntaje perfecto</span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+            <!-- /PUNTAJE Y PROGRESO -->
+
+        </div>
+        <!-- /dashboard__grid -->
+
+    </div>
+    <!-- /dashboard -->
+
+</main>
+<!-- /CONTENIDO PRINCIPAL -->
+
+<!-- Overlay para sidebar en mobile -->
+<div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+<!-- Scripts -->
+<script src="js/dashboard.js"></script>
+
+</body>
+</html>

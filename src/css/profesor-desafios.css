@@ -1,0 +1,214 @@
+/* ================================================================
+   profesor-desafios.css — Estilos exclusivos de HU-12
+   Vista del Profesor: Consulta de desafíos, entregas, calificación
+   ================================================================ */
+
+/* ── Layout de 3 columnas ──────────────────────────────────────── */
+.hu12-layout {
+    display: grid;
+    grid-template-columns: 260px 280px 1fr;
+    gap: 0;
+    flex: 1;
+    min-height: 0;
+    height: calc(100vh - 65px); /* descuenta el topbar */
+    overflow: hidden;
+}
+
+/* ── Paneles genéricos ─────────────────────────────────────────── */
+.panel {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--color-border);
+    overflow: hidden;
+}
+.panel:last-child { border-right: none; }
+
+.panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-lg);
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-surface);
+    flex-shrink: 0;
+}
+.panel__header h2 {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: 14px;
+    font-weight: 600;
+}
+.panel__header h2 i { color: var(--color-purple-600); font-size: 17px; }
+
+/* Área con scroll */
+.panel--challenges,
+.panel--submissions { overflow-y: auto; }
+.panel--grader { overflow-y: auto; }
+
+
+/* ================================================================
+   FILTROS DE PESTAÑA
+================================================================ */
+.filter-tabs {
+    display: flex;
+    gap: 4px;
+    padding: var(--space-sm) var(--space-md);
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-bg);
+    flex-shrink: 0;
+}
+.filter-tab {
+    padding: 5px 12px;
+    border-radius: var(--radius-full);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.filter-tab:hover { background: var(--color-surface); }
+.filter-tab--active {
+    background: var(--color-purple-50);
+    color: var(--color-purple-600);
+    border-color: var(--color-purple-200);
+}
+
+
+/* ================================================================
+   TARJETAS DE DESAFÍOS (columna 1)
+================================================================ */
+.challenge-cards {
+    list-style: none;
+    padding: var(--space-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    overflow-y: auto;
+    flex: 1;
+}
+
+.challenge-card {
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    cursor: pointer;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+.challenge-card:hover { border-color: var(--color-purple-200); box-shadow: var(--shadow-sm); }
+.challenge-card--active {
+    border-color: var(--color-purple-600) !important;
+    background: var(--color-purple-50);
+}
+
+.challenge-card__info h4 {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+.challenge-card__info p {
+    font-size: 11px;
+    color: var(--color-text-muted);
+}
+
+/* Pill de estado */
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: var(--radius-full);
+    font-size: 11px;
+    font-weight: 600;
+}
+.status-pill--open    { background: var(--color-teal-50);   color: var(--color-teal-600); }
+.status-pill--closed  { background: var(--color-coral-50);  color: var(--color-coral-600); }
+.status-pill--pending { background: var(--color-amber-50);  color: var(--color-amber-600); }
+.status-pill--graded  { background: var(--color-teal-50);   color: var(--color-teal-600); }
+
+
+/* ================================================================
+   LISTA DE ENTREGAS (columna 2)
+================================================================ */
+.submission-list {
+    list-style: none;
+    padding: var(--space-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    flex: 1;
+}
+
+.submission-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: 10px var(--space-md);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    cursor: pointer;
+    transition: border-color var(--transition);
+}
+.submission-item:hover { border-color: var(--color-purple-200); }
+.submission-item.active { border-color: var(--color-purple-600); background: var(--color-purple-50); }
+
+.submission-item__avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-full);
+    background: var(--color-purple-50);
+    color: var(--color-purple-800);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+.submission-item__info { flex: 1; min-width: 0; }
+.submission-item__name { font-size: 13px; font-weight: 500; }
+.submission-item__status { font-size: 11px; color: var(--color-text-muted); margin-top: 1px; }
+
+
+/* ================================================================
+   VISOR + FORMULARIO DE CALIFICACIÓN (columna 3)
+================================================================ */
+.grader-content {
+    display: flex; flex-direction: column; gap: var(--space-md); padding: var(--space-lg); flex: 1;
+}
+
+.student-info-bar {
+    display: flex; align-items: center; gap: var(--space-md); padding: var(--space-md); background: var(--color-bg); border-radius: var(--radius-md); border: 1px solid var(--color-border);
+}
+.student-info-bar__avatar {
+    width: 42px; height: 42px; border-radius: var(--radius-full); background: var(--color-purple-50); color: var(--color-purple-800); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;
+}
+.student-info-bar__name { font-size: 14px; font-weight: 600; }
+
+.code-viewer { border-radius: var(--radius-md); border: 1px solid var(--color-border); overflow: hidden; margin-bottom: 20px; }
+
+.grade-form { border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 20px; background: var(--color-surface); }
+.grade-form__field { margin-bottom: 15px; display: flex; flex-direction: column; gap: 5px; }
+.grade-form__field label { font-size: 13px; font-weight: 500; }
+.grade-form__input { padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; width: 100px; }
+.grade-form__textarea { padding: 8px; border: 1px solid var(--color-border); border-radius: 4px; min-height: 80px; }
+
+.btn { padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+.btn--primary { background: var(--color-purple-600); color: white; }
+.btn--primary:hover { background: var(--color-purple-800); }
+
+/* ── Empty state ─────────────────────────────────────────────── */
+.empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-md); flex: 1; padding: var(--space-2xl); text-align: center; color: var(--color-text-muted); }
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 860px) {
+    .hu12-layout { grid-template-columns: 1fr; height: auto; }
+}

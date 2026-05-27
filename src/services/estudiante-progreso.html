@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Mi Progreso | EduSystem</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+    <link rel="stylesheet" href="../css/variables.css"/>
+    <link rel="stylesheet" href="../css/layout.css"/>
+    <link rel="stylesheet" href="../css/components.css"/>
+    <link rel="stylesheet" href="../css/dashboard.css"/>
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar__brand">
+        <div class="sidebar__logo" aria-hidden="true"><i class="ti ti-school"></i></div>
+        <span class="sidebar__title">EduSystem</span>
+    </div>
+    <div class="sidebar__divider"></div>
+    <nav class="sidebar__nav">
+        <ul class="sidebar__menu">
+            <li class="sidebar__item">
+                <a href="index.html" class="sidebar__link"><i class="ti ti-layout-dashboard"></i><span>Dashboard</span></a>
+            </li>
+            <li class="sidebar__item">
+                <a href="#" class="sidebar__link"><i class="ti ti-users-group"></i><span>Mis Grupos</span></a>
+            </li>
+            <li class="sidebar__item">
+                <a href="#" class="sidebar__link"><i class="ti ti-trophy"></i><span>Desafíos</span></a>
+            </li>
+            <li class="sidebar__item sidebar__item--active">
+                <a href="estudiante-progreso.html" class="sidebar__link"><i class="ti ti-chart-bar"></i><span>Mi Progreso</span></a>
+            </li>
+            <li class="sidebar__item">
+                <a href="profesor-desafio.html" class="sidebar__link"><i class="ti ti-user-check"></i><span>Vista Profesor</span></a>
+            </li>
+        </ul>
+    </nav>
+    <div class="sidebar__divider sidebar__divider--bottom"></div>
+    <div class="sidebar__profile">
+        <div class="sidebar__avatar">AG</div>
+        <div class="sidebar__user-info">
+            <p class="sidebar__user-name">Ana García</p>
+            <p class="sidebar__user-role">Estudiante</p>
+        </div>
+    </div>
+</aside>
+
+<main class="main-content">
+    <header class="topbar">
+        <button class="topbar__menu-toggle" id="menuToggle"><i class="ti ti-menu-2"></i></button>
+        <div class="topbar__title">
+            <h1>Mi Progreso</h1>
+            <p class="topbar__breadcrumb">Dashboard &rsaquo; Progreso</p>
+        </div>
+    </header>
+
+    <div class="hu11-layout" style="padding: 24px;">
+        <section class="card" style="margin-bottom: 24px;">
+            <div class="card__header"><h3>Nivel y XP</h3></div>
+            <div class="card__body">
+                <div style="display: flex; align-items: center; gap: 24px;">
+                    <div style="background: var(--color-purple-600); color: white; width: 80px; height: 80px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <span id="levelNumber" style="font-size: 24px; font-weight: bold;">5</span>
+                        <span style="font-size: 10px;">NIVEL</span>
+                    </div>
+                    <div style="flex: 1;">
+                        <p>XP Acumulado hacia el siguiente nivel</p>
+                        <div class="xp-bar__track" style="background: #eee; height: 12px; border-radius: 6px; overflow: hidden; margin-top: 8px; position: relative;">
+                            <div id="xpBarFill" style="background: var(--color-purple-600); height: 100%; width: 72%;"></div>
+                        </div>
+                        <p id="xpPct" style="text-align: right; font-size: 12px; margin-top: 4px;">72%</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <div class="card__header"><h3>Mis Desafíos (HU-11)</h3></div>
+            <div class="card__body">
+                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                    <thead>
+                        <tr style="text-align: left; border-bottom: 1px solid #eee;">
+                            <th style="padding: 12px;">Desafío</th>
+                            <th style="padding: 12px;">Materia</th>
+                            <th style="padding: 12px;">Estado</th>
+                            <th style="padding: 12px;">Puntaje</th>
+                        </tr>
+                    </thead>
+                    <tbody id="challengesTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</main>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<script src="../js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Consulta de Desafíos | Profesor | EduSystem</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+    <link rel="stylesheet" href="../css/variables.css"/>
+    <link rel="stylesheet" href="../css/layout.css"/>
+    <link rel="stylesheet" href="../css/components.css"/>
+    <link rel="stylesheet" href="../css/profesor-desafios.css"/>
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar__brand">
+        <div class="sidebar__logo" aria-hidden="true"><i class="ti ti-school"></i></div>
+        <span class="sidebar__title">EduSystem</span>
+    </div>
+    <div class="sidebar__divider"></div>
+    <nav class="sidebar__nav">
+        <ul class="sidebar__menu">
+            <li class="sidebar__item">
+                <a href="index.html" class="sidebar__link"><i class="ti ti-layout-dashboard"></i><span>Dashboard</span></a>
+            </li>
+            <li class="sidebar__item sidebar__item--active">
+                <a href="profesor-desafio.html" class="sidebar__link"><i class="ti ti-trophy"></i><span>Desafíos</span></a>
+            </li>
+            <li class="sidebar__item">
+                <a href="#" class="sidebar__link"><i class="ti ti-users-group"></i><span>Mis Grupos</span></a>
+            </li>
+            <li class="sidebar__item">
+                <a href="estudiante-progreso.html" class="sidebar__link"><i class="ti ti-user"></i><span>Vista Estudiante</span></a>
+            </li>
+        </ul>
+    </nav>
+    <div class="sidebar__divider sidebar__divider--bottom"></div>
+    <div class="sidebar__profile">
+        <div class="sidebar__avatar" style="background:#5DCAA5;color:#085041;">MR</div>
+        <div class="sidebar__user-info">
+            <p class="sidebar__user-name">Mario Ramírez</p>
+            <p class="sidebar__user-role">Profesor</p>
+        </div>
+    </div>
+</aside>
+
+<main class="main-content">
+    <header class="topbar">
+        <button class="topbar__menu-toggle" id="menuToggle"><i class="ti ti-menu-2"></i></button>
+        <div class="topbar__title">
+            <h1>Consulta de Desafíos</h1>
+            <p class="topbar__breadcrumb">Dashboard &rsaquo; Desafíos</p>
+        </div>
+    </header>
+
+    <div class="hu12-layout">
+        <section class="panel panel--challenges">
+            <div class="panel__header"><h2><i class="ti ti-trophy"></i> Desafíos</h2></div>
+            <ul class="challenge-cards" id="challengeList"></ul>
+        </section>
+
+        <section class="panel panel--submissions">
+            <div class="panel__header"><h2 id="submissionsPanelTitle">Entregas</h2></div>
+            <div class="empty-state" id="emptyState"><p>Selecciona un desafío</p></div>
+            <ul class="submission-list" id="submissionList" style="display:none"></ul>
+        </section>
+
+        <section class="panel panel--grader">
+            <div class="panel__header"><h2><i class="ti ti-eye"></i> Calificar</h2></div>
+            <div class="empty-state" id="graderEmpty"><p>Selecciona una entrega</p></div>
+            <div class="grader-content" id="graderContent" style="display:none">
+                <div class="student-info-bar">
+                    <div class="student-info-bar__avatar" id="graderAvatar"></div>
+                    <p class="student-info-bar__name" id="graderStudentName"></p>
+                </div>
+                <div class="code-viewer"><pre id="codeContent" style="padding: 16px; background: #282c34; color: #abb2bf; border-radius: 8px; overflow-x: auto;"></pre></div>
+                <div class="grade-form">
+                    <div class="grade-form__field">
+                        <label>Puntuación (0-100)</label>
+                        <input type="number" id="gradeInput" class="grade-form__input" min="0" max="100" />
+                    </div>
+                    <div class="grade-form__field">
+                        <label>Retroalimentación</label>
+                        <textarea id="feedbackInput" class="grade-form__textarea"></textarea>
+                    </div>
+                    <button class="btn btn--primary" id="saveGradeBtn">Guardar Calificación</button>
+                    <div id="gradeToast" style="display:none; color: green; margin-top: 10px;">¡Calificado con éxito!</div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<script src="../js/dashboard.js"></script>
+</body>
+</html>

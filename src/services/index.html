@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Estudiante | EduSystem</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" />
+    <link rel="stylesheet" href="../css/variables.css" />
+    <link rel="stylesheet" href="../css/layout.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/dashboard.css" />
+</head>
+<body>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar__brand">
+        <div class="sidebar__logo" aria-hidden="true"><i class="ti ti-school"></i></div>
+        <span class="sidebar__title">EduSystem</span>
+    </div>
+    <div class="sidebar__divider"></div>
+    <nav class="sidebar__nav">
+        <ul class="sidebar__menu">
+            <li class="sidebar__item sidebar__item--active">
+                <a href="index.html" class="sidebar__link">
+                    <i class="ti ti-layout-dashboard"></i><span>Dashboard</span>
+                </a>
+            </li>
+            <li class="sidebar__item">
+                <a href="#" class="sidebar__link">
+                    <i class="ti ti-users-group"></i><span>Mis Grupos</span>
+                </a>
+            </li>
+            <li class="sidebar__item">
+                <a href="#" class="sidebar__link">
+                    <i class="ti ti-trophy"></i><span>Desafíos</span>
+                    <span class="badge badge--danger">3</span>
+                </a>
+            </li>
+            <li class="sidebar__item">
+                <a href="estudiante-progreso.html" class="sidebar__link">
+                    <i class="ti ti-chart-bar"></i><span>Mi Progreso</span>
+                </a>
+            </li>
+            <li class="sidebar__item">
+                <a href="profesor-desafio.html" class="sidebar__link">
+                    <i class="ti ti-user-check"></i><span>Vista Profesor</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="sidebar__divider sidebar__divider--bottom"></div>
+    <div class="sidebar__profile">
+        <div class="sidebar__avatar">AG</div>
+        <div class="sidebar__user-info">
+            <p class="sidebar__user-name">Ana García</p>
+            <p class="sidebar__user-role">Estudiante</p>
+        </div>
+    </div>
+</aside>
+
+<main class="main-content">
+    <header class="topbar">
+        <button class="topbar__menu-toggle" id="menuToggle"><i class="ti ti-menu-2"></i></button>
+        <div class="topbar__title">
+            <h1>Dashboard</h1>
+            <p class="topbar__breadcrumb">Inicio &rsaquo; Dashboard</p>
+        </div>
+    </header>
+
+    <div class="dashboard">
+        <section class="dashboard__welcome">
+            <div class="dashboard__welcome-text">
+                <h2>¡Bienvenida, Ana!</h2>
+                <p>Gestiona tus grupos y desafíos desde aquí.</p>
+            </div>
+            <div class="dashboard__welcome-date"><i class="ti ti-calendar"></i><span id="currentDate"></span></div>
+        </section>
+
+        <section class="metrics-grid">
+            <article class="metric-card metric-card--challenges">
+                <div class="metric-card__icon"><i class="ti ti-trophy"></i></div>
+                <div class="metric-card__body">
+                    <p class="metric-card__label">Desafíos pendientes</p>
+                    <p class="metric-card__value">3</p>
+                </div>
+            </article>
+            <article class="metric-card metric-card--score">
+                <div class="metric-card__icon"><i class="ti ti-star"></i></div>
+                <div class="metric-card__body">
+                    <p class="metric-card__label">Puntaje total</p>
+                    <p class="metric-card__value">1,240</p>
+                </div>
+            </article>
+        </section>
+
+        <div class="dashboard__grid">
+            <section class="card">
+                <div class="card__header">
+                    <div class="card__header-left"><i class="ti ti-trophy"></i><h3>Desafíos Pendientes</h3></div>
+                </div>
+                <div class="card__body">
+                    <ul class="challenge-list"></ul>
+                </div>
+            </section>
+        </div>
+    </div>
+</main>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<script src="../js/dashboard.js"></script>
+</body>
+</html>
