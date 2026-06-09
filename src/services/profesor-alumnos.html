@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>HU-06: Gestión de Alumnos | Profesor | EduSystem IPN</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+    <link rel="stylesheet" href="../css/variables.css"/>
+    <link rel="stylesheet" href="../css/layout.css"/>
+    <link rel="stylesheet" href="../css/components.css"/>
+    <link rel="stylesheet" href="../css/profesor-alumnos.css"/>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     SIDEBAR IPN
+══════════════════════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar__brand">
+        <div class="sidebar__logo"><i class="ti ti-school"></i></div>
+        <span class="sidebar__title">EduSystem</span>
+    </div>
+    <p class="sidebar__subtitle">IPN</p>
+    <div class="sidebar__divider"></div>
+    <nav class="sidebar__nav">
+        <p class="sidebar__section-label">Profesor</p>
+        <ul class="sidebar__menu">
+            <li class="sidebar__item"><a href="../index.html" class="sidebar__link"><i class="ti ti-layout-dashboard"></i><span>Dashboard</span></a></li>
+            <li class="sidebar__item"><a href="profesor-desafios.html" class="sidebar__link"><i class="ti ti-trophy"></i><span>Desafíos</span></a></li>
+            <li class="sidebar__item sidebar__item--active"><a href="profesor-alumnos.html" class="sidebar__link" aria-current="page"><i class="ti ti-users"></i><span>Gestión Alumnos</span></a></li>
+            <li class="sidebar__item"><a href="#" class="sidebar__link"><i class="ti ti-books"></i><span>Recursos</span></a></li>
+            <li class="sidebar__item"><a href="#" class="sidebar__link"><i class="ti ti-chart-bar"></i><span>Calificaciones</span></a></li>
+            <li class="sidebar__item"><a href="#" class="sidebar__link"><i class="ti ti-message-circle"></i><span>Mensajes</span><span class="badge badge--danger">2</span></a></li>
+        </ul>
+        <p class="sidebar__section-label" style="margin-top:8px;">Otras vistas</p>
+        <ul class="sidebar__menu">
+            <li class="sidebar__item"><a href="estudiante-progreso.html" class="sidebar__link"><i class="ti ti-chart-bar"></i><span>Vista Estudiante</span></a></li>
+        </ul>
+    </nav>
+    <div class="sidebar__divider sidebar__divider--bottom"></div>
+    <div class="sidebar__profile">
+        <div class="sidebar__avatar" style="background:var(--ipn-600);border-color:var(--gold-400);">MR</div>
+        <div class="sidebar__user-info">
+            <p class="sidebar__user-name">Mario Ramírez</p>
+            <p class="sidebar__user-role">Profesor</p>
+        </div>
+        <a href="#" class="sidebar__settings-btn"><i class="ti ti-settings"></i></a>
+    </div>
+</aside>
+
+<!-- ══════════════════════════════════════════
+     MAIN CONTENT
+══════════════════════════════════════════ -->
+<main class="main-content" id="main-content">
+
+    <header class="topbar">
+        <button class="topbar__menu-toggle" id="menuToggle"><i class="ti ti-menu-2"></i></button>
+        <div class="topbar__title">
+            <h1>Gestión de Alumnos</h1>
+            <p class="topbar__breadcrumb">Dashboard › HU-06: Gestión de alumnos</p>
+        </div>
+        <div class="topbar__actions">
+            <!-- CA-5: Botón inscribir nuevo alumno -->
+            <button class="btn btn--primary" id="openEnrollModal">
+                <i class="ti ti-user-plus"></i> Inscribir alumno
+            </button>
+            <button class="topbar__icon-btn"><i class="ti ti-bell"></i></button>
+        </div>
+    </header>
+
+    <!-- ══════════════════════════════════════
+         CUERPO HU-06
+    ══════════════════════════════════════ -->
+    <div class="hu06-layout">
+
+        <!-- CA-2: Métricas globales de estudiantes inscritos -->
+        <div class="hu06-metrics" aria-label="Resumen global de estudiantes">
+            <div class="metric-card metric-card--groups">
+                <div class="metric-card__icon"><i class="ti ti-users"></i></div>
+                <div><p class="metric-card__label">Total inscritos</p><p class="metric-card__value" id="metricTotal">47</p></div>
+            </div>
+            <div class="metric-card metric-card--progress">
+                <div class="metric-card__icon"><i class="ti ti-circle-check"></i></div>
+                <div><p class="metric-card__label">Al corriente</p><p class="metric-card__value" id="metricOnTrack">38</p></div>
+            </div>
+            <div class="metric-card metric-card--challenges">
+                <div class="metric-card__icon"><i class="ti ti-alert-triangle"></i></div>
+                <div><p class="metric-card__label">Con pendientes</p><p class="metric-card__value" id="metricPending">9</p></div>
+            </div>
+            <div class="metric-card metric-card--score">
+                <div class="metric-card__icon"><i class="ti ti-star"></i></div>
+                <div><p class="metric-card__label">Promedio general</p><p class="metric-card__value" id="metricAvg">78</p></div>
+            </div>
+        </div>
+
+        <!-- CA-4: Búsqueda y filtrado de alumnos -->
+        <div class="action-bar" role="search" aria-label="Buscar y filtrar alumnos">
+            <div class="search-box">
+                <i class="ti ti-search"></i>
+                <input type="search" id="searchInput" placeholder="Buscar por nombre, correo o número de boleta..." aria-label="Buscar alumno"/>
+            </div>
+            <!-- Filtro por curso -->
+            <select class="filter-select" id="courseFilter" aria-label="Filtrar por curso">
+                <option value="all">Todos los cursos</option>
+                <option value="mat">Matemáticas Avanzadas</option>
+                <option value="fis">Física General II</option>
+                <option value="prog">Programación I</option>
+            </select>
+            <!-- Filtro por estado -->
+            <select class="filter-select" id="statusFilter" aria-label="Filtrar por estado">
+                <option value="all">Todos los estados</option>
+                <option value="active">Al corriente</option>
+                <option value="pending">Con pendientes</option>
+            </select>
+        </div>
+
+        <!-- CA-2 + CA-3: Tabla global e individual de alumnos -->
+        <div class="students-table-wrapper">
+            <div class="students-table-header">
+                <h2><i class="ti ti-users"></i> Alumnos inscritos <span class="badge badge--ipn" id="countBadge">47</span></h2>
+                <div class="students-table-header__right">
+                    <!-- Acciones en bulk cuando hay seleccionados -->
+                    <span id="bulkInfo" style="font-size:12px;color:var(--color-text-muted);display:none">
+              <span id="bulkCount">0</span> seleccionados
+            </span>
+                    <button class="btn btn--danger btn--sm" id="bulkDeleteBtn" style="display:none">
+                        <i class="ti ti-trash"></i> Eliminar seleccionados
+                    </button>
+                </div>
+            </div>
+
+            <div style="overflow-x:auto;">
+                <table class="students-table" aria-label="Lista de alumnos inscritos">
+                    <thead>
+                    <tr>
+                        <th scope="col"><input type="checkbox" id="selectAll" class="row-check" aria-label="Seleccionar todos"/></th>
+                        <th scope="col">Alumno</th>
+                        <th scope="col">Boleta</th>
+                        <th scope="col">Curso</th>
+                        <th scope="col">Progreso</th>
+                        <th scope="col">Puntaje</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                    </thead>
+                    <!-- Generado por alumnosController.js -->
+                    <tbody id="studentsTableBody"></tbody>
+                </table>
+            </div>
+
+            <!-- Paginación -->
+            <div class="table-footer">
+                <span id="tableInfo">Mostrando 1–10 de 47 alumnos</span>
+                <div class="pagination" id="pagination" role="navigation" aria-label="Paginación">
+                    <button class="page-btn" id="prevPage" aria-label="Página anterior">
+                        <i class="ti ti-chevron-left"></i>
+                    </button>
+                    <!-- Números generados por JS -->
+                    <span id="pageNumbers"></span>
+                    <button class="page-btn" id="nextPage" aria-label="Página siguiente">
+                        <i class="ti ti-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        <!-- /tabla -->
+
+        <!-- Toast de acciones -->
+        <div class="action-toast action-toast--success" id="actionToast" style="display:none">
+            <i class="ti ti-circle-check"></i>
+            <span id="toastMsg">Acción completada correctamente.</span>
+        </div>
+
+    </div>
+    <!-- /hu06-layout -->
+
+</main>
+
+<div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+<!-- ══════════════════════════════════════════
+     MODAL: Perfil individual del alumno (CA-3)
+══════════════════════════════════════════ -->
+<div class="modal-overlay" id="studentModal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="modalStudentTitle">
+    <div class="modal">
+        <div class="modal__header">
+            <h2 class="modal__title" id="modalStudentTitle">Perfil del Alumno</h2>
+            <button class="modal__close" id="closeStudentModal" aria-label="Cerrar">
+                <i class="ti ti-x"></i>
+            </button>
+        </div>
+        <div class="modal__body">
+            <!-- Tarjeta de perfil -->
+            <div class="profile-card">
+                <div class="profile-card__avatar" id="modalAvatar">AG</div>
+                <div>
+                    <p class="profile-card__name" id="modalName">—</p>
+                    <p class="profile-card__email" id="modalEmail">—</p>
+                    <div class="profile-card__badges" id="modalBadges"></div>
+                </div>
+            </div>
+            <!-- Stats del alumno -->
+            <div class="student-stats-grid">
+                <div class="student-stat-card">
+                    <p class="student-stat-card__val" id="modalCompleted">—</p>
+                    <p class="student-stat-card__lbl">Completados</p>
+                </div>
+                <div class="student-stat-card">
+                    <p class="student-stat-card__val" id="modalPending">—</p>
+                    <p class="student-stat-card__lbl">Pendientes</p>
+                </div>
+                <div class="student-stat-card">
+                    <p class="student-stat-card__val" id="modalScore">—</p>
+                    <p class="student-stat-card__lbl">Puntaje total</p>
+                </div>
+            </div>
+            <!-- Desafíos del alumno -->
+            <div>
+                <p style="font-size:13px;font-weight:600;color:var(--ipn-600);margin-bottom:8px;">
+                    <i class="ti ti-trophy"></i> Desafíos
+                </p>
+                <div class="modal-challenge-list" id="modalChallengeList"></div>
+            </div>
+        </div>
+        <div class="modal__footer">
+            <button class="btn btn--danger btn--sm" id="modalDeleteBtn">
+                <i class="ti ti-trash"></i> Eliminar del curso
+            </button>
+            <button class="btn btn--ghost btn--sm" id="closeStudentModal2">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MODAL: Inscribir alumno (CA-5)
+══════════════════════════════════════════ -->
+<div class="modal-overlay" id="enrollModal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="enrollModalTitle">
+    <div class="modal">
+        <div class="modal__header">
+            <h2 class="modal__title" id="enrollModalTitle">
+                <i class="ti ti-user-plus"></i> Inscribir nuevo alumno
+            </h2>
+            <button class="modal__close" id="closeEnrollModal" aria-label="Cerrar">
+                <i class="ti ti-x"></i>
+            </button>
+        </div>
+        <div class="modal__body">
+            <div class="enroll-form">
+                <div class="form-field">
+                    <label class="form-label" for="enrollName">Nombre completo *</label>
+                    <input class="form-input" id="enrollName" type="text" placeholder="Ej: Carlos Morales Pérez" required/>
+                </div>
+                <div class="form-field">
+                    <label class="form-label" for="enrollBoleta">Número de boleta *</label>
+                    <input class="form-input" id="enrollBoleta" type="text" placeholder="Ej: 2023600123" required/>
+                </div>
+                <div class="form-field">
+                    <label class="form-label" for="enrollEmail">Correo institucional *</label>
+                    <input class="form-input" id="enrollEmail" type="email" placeholder="alumno@ipn.mx" required/>
+                </div>
+                <div class="form-field">
+                    <label class="form-label" for="enrollCourse">Curso al que se inscribe *</label>
+                    <select class="form-select" id="enrollCourse" required>
+                        <option value="">Selecciona un curso...</option>
+                        <option value="mat">Matemáticas Avanzadas</option>
+                        <option value="fis">Física General II</option>
+                        <option value="prog">Programación I</option>
+                    </select>
+                </div>
+                <div id="enrollFeedback"></div>
+            </div>
+        </div>
+        <div class="modal__footer">
+            <button class="btn btn--ghost btn--sm" id="closeEnrollModal2">Cancelar</button>
+            <button class="btn btn--primary" id="saveEnrollBtn">
+                <i class="ti ti-device-floppy"></i> Guardar inscripción
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Confirm dialog de eliminación (CA-6) -->
+<div class="modal-overlay" id="confirmModal" style="display:none" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="modal" style="max-width:400px">
+        <div class="modal__header">
+            <h2 class="modal__title" id="confirmTitle" style="color:#fff;">
+                <i class="ti ti-alert-triangle"></i> Confirmar eliminación
+            </h2>
+            <button class="modal__close" id="closeConfirmModal"><i class="ti ti-x"></i></button>
+        </div>
+        <div class="modal__body">
+            <p style="font-size:14px;color:var(--color-text-secondary);line-height:1.6;" id="confirmMsg">
+                ¿Estás seguro de que deseas eliminar a este alumno del curso? Esta acción no se puede deshacer.
+            </p>
+        </div>
+        <div class="modal__footer">
+            <button class="btn btn--ghost btn--sm" id="cancelDelete">Cancelar</button>
+            <button class="btn btn--danger" id="confirmDeleteBtn">
+                <i class="ti ti-trash"></i> Sí, eliminar
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="../js/mockData.js"></script>
+<script src="../js/alumnosController.js"></script>
+<script src="../js/dashboard.js"></script>
+</body>
+</html>
