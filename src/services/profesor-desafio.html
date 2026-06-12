@@ -1,99 +1,398 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Consulta de Desafíos | Profesor | EduSystem</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"/>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
-    <link rel="stylesheet" href="../css/variables.css"/>
-    <link rel="stylesheet" href="../css/layout.css"/>
-    <link rel="stylesheet" href="../css/components.css"/>
-    <link rel="stylesheet" href="../css/profesor-desafios.css"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Desafíos | EduSystem</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --color-primary: #7B1F2E;
+            --color-primary-dark: #5a1520;
+            --color-primary-light: #9e2d40;
+            --color-bg: #f5f5f0;
+            --color-surface: #ffffff;
+            --color-text: #1a1a1a;
+            --color-text-muted: #6b6b6b;
+            --color-border: #e5e5e0;
+            --color-success: #2e7d32;
+            --color-warning: #e65100;
+            --color-info: #1565c0;
+            --sidebar-width: 220px;
+            --radius: 10px;
+            --shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--color-bg); color: var(--color-text); display: flex; min-height: 100vh; }
+
+        /* SIDEBAR */
+        .sidebar { width: var(--sidebar-width); background: var(--color-primary-dark); color: #fff; display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0; z-index: 100; }
+        .sidebar-brand { display: flex; align-items: center; gap: 10px; padding: 22px 18px 18px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-brand .brand-icon { width: 34px; height: 34px; background: rgba(255,255,255,0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .sidebar-brand span { font-size: 1rem; font-weight: 700; }
+        .sidebar-nav { flex: 1; padding: 10px 0; overflow-y: auto; }
+        .nav-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.5; padding: 14px 18px 6px; }
+        .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 18px; color: rgba(255,255,255,0.78); text-decoration: none; font-size: 0.88rem; transition: background 0.15s; cursor: pointer; position: relative; }
+        .nav-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
+        .nav-item.active { background: rgba(255,255,255,0.15); color: #fff; font-weight: 600; }
+        .nav-item.active::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: #fff; border-radius: 0 3px 3px 0; }
+        .nav-badge { margin-left: auto; background: var(--color-primary-light); color: #fff; font-size: 0.7rem; font-weight: 700; padding: 2px 7px; border-radius: 20px; }
+        .sidebar-footer { padding: 14px 18px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 10px; }
+        .avatar-sm { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; }
+        .footer-info .f-name { font-size: 0.83rem; font-weight: 600; }
+        .footer-info .f-role { font-size: 0.72rem; opacity: 0.6; }
+
+        /* MAIN */
+        .main-content { margin-left: var(--sidebar-width); flex: 1; }
+        .page-header { background: var(--color-surface); border-bottom: 1px solid var(--color-border); padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
+        .page-header h1 { font-size: 1.3rem; font-weight: 700; }
+        .breadcrumb { font-size: 0.78rem; color: var(--color-text-muted); margin-top: 2px; }
+        .breadcrumb a { color: var(--color-primary); text-decoration: none; }
+        .page-body { padding: 28px 32px; }
+
+        /* SUMMARY CARDS */
+        .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+        .sum-card { background: var(--color-surface); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 14px; }
+        .sum-icon { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+        .sum-icon.red { background: #fce4ec; color: var(--color-primary); }
+        .sum-icon.orange { background: #fff3e0; color: #e65100; }
+        .sum-icon.green { background: #e8f5e9; color: #2e7d32; }
+        .sum-icon.blue { background: #e3f2fd; color: #1565c0; }
+        .sum-val { font-size: 1.5rem; font-weight: 800; }
+        .sum-lbl { font-size: 0.75rem; color: var(--color-text-muted); }
+
+        /* SECTION CARD */
+        .section-card { background: var(--color-surface); border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 20px; overflow: hidden; }
+        .section-head { padding: 16px 22px; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; justify-content: space-between; }
+        .section-head-left { display: flex; align-items: center; gap: 10px; }
+        .section-head h3 { font-size: 1rem; font-weight: 700; }
+        .section-head i { color: var(--color-primary); }
+
+        /* FILTROS */
+        .filtros { display: flex; gap: 10px; padding: 14px 22px; border-bottom: 1px solid var(--color-border); flex-wrap: wrap; }
+        .filtro-select { padding: 7px 12px; border: 1px solid var(--color-border); border-radius: 7px; font-size: 0.83rem; background: #fff; cursor: pointer; color: var(--color-text); }
+        .filtro-select:focus { outline: none; border-color: var(--color-primary); }
+        .search-box { display: flex; align-items: center; gap: 8px; padding: 7px 12px; border: 1px solid var(--color-border); border-radius: 7px; background: #fff; flex: 1; max-width: 280px; }
+        .search-box input { border: none; outline: none; font-size: 0.83rem; width: 100%; }
+        .search-box i { color: var(--color-text-muted); font-size: 0.85rem; }
+
+        /* TABLA */
+        .tabla-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; font-size: 0.73rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--color-text-muted); padding: 11px 16px; border-bottom: 2px solid var(--color-border); background: #fafafa; white-space: nowrap; }
+        td { padding: 13px 16px; border-bottom: 1px solid var(--color-border); font-size: 0.88rem; vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: #fafafa; }
+        .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 600; white-space: nowrap; }
+        .badge-pending { background: #fff3e0; color: #e65100; }
+        .badge-graded { background: #e8f5e9; color: #2e7d32; }
+        .badge-late { background: #fce4ec; color: #c62828; }
+        .badge-empty { background: #f5f5f5; color: #757575; }
+        .pts-chip { font-weight: 700; color: var(--color-primary); }
+        .btn-sm { padding: 5px 13px; border-radius: 6px; font-size: 0.78rem; font-weight: 600; cursor: pointer; border: none; transition: 0.15s; }
+        .btn-primary { background: var(--color-primary); color: #fff; }
+        .btn-primary:hover { background: var(--color-primary-light); }
+        .btn-outline { background: transparent; color: var(--color-primary); border: 1px solid var(--color-primary); }
+        .btn-outline:hover { background: #fce4ec; }
+        .btns-cell { display: flex; gap: 6px; }
+        .avatar-xs { width: 28px; height: 28px; border-radius: 50%; background: var(--color-primary); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; margin-right: 8px; vertical-align: middle; flex-shrink: 0; }
+        .student-cell { display: flex; align-items: center; }
+
+        /* MODAL */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 200; align-items: center; justify-content: center; }
+        .modal-overlay.open { display: flex; }
+        .modal { background: #fff; border-radius: var(--radius); width: 700px; max-width: 96vw; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+        .modal-header { padding: 18px 24px; border-bottom: 1px solid var(--color-border); display: flex; align-items: center; justify-content: space-between; }
+        .modal-header h2 { font-size: 1.05rem; font-weight: 700; }
+        .modal-close { background: none; border: none; cursor: pointer; font-size: 1.2rem; color: var(--color-text-muted); padding: 4px; }
+        .modal-close:hover { color: var(--color-text); }
+        .modal-body { padding: 22px 24px; overflow-y: auto; flex: 1; }
+        .modal-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .meta-item label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--color-text-muted); display: block; margin-bottom: 3px; }
+        .meta-item span { font-size: 0.9rem; font-weight: 600; }
+        .code-viewer { background: #1e1e2e; color: #cdd6f4; border-radius: 8px; padding: 18px; font-family: 'Courier New', monospace; font-size: 0.82rem; line-height: 1.6; overflow-x: auto; margin-bottom: 20px; white-space: pre; }
+        .grade-form { border-top: 1px solid var(--color-border); padding-top: 18px; }
+        .grade-form h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 14px; }
+        .form-row { display: flex; gap: 12px; margin-bottom: 12px; }
+        .form-field { flex: 1; }
+        .form-field label { font-size: 0.78rem; color: var(--color-text-muted); display: block; margin-bottom: 5px; font-weight: 600; }
+        .form-field input, .form-field textarea { width: 100%; padding: 9px 12px; border: 1px solid var(--color-border); border-radius: 7px; font-size: 0.88rem; font-family: inherit; }
+        .form-field input:focus, .form-field textarea:focus { outline: none; border-color: var(--color-primary); }
+        .form-field textarea { resize: vertical; min-height: 80px; }
+        .modal-footer { padding: 14px 24px; border-top: 1px solid var(--color-border); display: flex; justify-content: flex-end; gap: 10px; }
+        .btn-lg { padding: 9px 22px; border-radius: 8px; font-size: 0.88rem; font-weight: 600; cursor: pointer; border: none; }
+        .btn-cancel { background: #f0f0f0; color: var(--color-text); }
+        .btn-save { background: var(--color-primary); color: #fff; }
+        .btn-save:hover { background: var(--color-primary-light); }
+        .toast { position: fixed; bottom: 28px; right: 28px; background: #2e7d32; color: #fff; padding: 13px 22px; border-radius: 9px; font-size: 0.88rem; font-weight: 600; display: none; z-index: 300; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+        .toast.show { display: flex; align-items: center; gap: 8px; }
+    </style>
 </head>
 <body>
 
-<aside class="sidebar" id="sidebar">
-    <div class="sidebar__brand">
-        <div class="sidebar__logo" aria-hidden="true"><i class="ti ti-school"></i></div>
-        <span class="sidebar__title">EduSystem</span>
+<!-- SIDEBAR PROFESOR -->
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <div class="brand-icon"><i class="fas fa-graduation-cap"></i></div>
+        <span>EduSystem</span>
     </div>
-    <div class="sidebar__divider"></div>
-    <nav class="sidebar__nav">
-        <ul class="sidebar__menu">
-            <li class="sidebar__item">
-                <a href="index.html" class="sidebar__link"><i class="ti ti-layout-dashboard"></i><span>Dashboard</span></a>
-            </li>
-            <li class="sidebar__item sidebar__item--active">
-                <a href="profesor-desafio.html" class="sidebar__link"><i class="ti ti-trophy"></i><span>Desafíos</span></a>
-            </li>
-            <li class="sidebar__item">
-                <a href="#" class="sidebar__link"><i class="ti ti-users-group"></i><span>Mis Grupos</span></a>
-            </li>
-            <li class="sidebar__item">
-                <a href="estudiante-progreso.html" class="sidebar__link"><i class="ti ti-user"></i><span>Vista Estudiante</span></a>
-            </li>
-        </ul>
+    <nav class="sidebar-nav">
+        <div class="nav-label">Profesor</div>
+        <a href="../services/index.html" class="nav-item"><i class="fas fa-th-large fa-fw"></i> Dashboard</a>
+        <a href="../services/profesor-alumnos.html" class="nav-item"><i class="fas fa-users fa-fw"></i> Mis Alumnos</a>
+        <a href="profesor-desafio.html" class="nav-item active">
+            <i class="fas fa-trophy fa-fw"></i> Desafíos
+            <span class="nav-badge">5</span>
+        </a>
+        <a href="profesor-progreso.html" class="nav-item"><i class="fas fa-chart-bar fa-fw"></i> Progreso Grupo</a>
+        <div class="nav-label">Gestión</div>
+        <a href="recursos.html" class="nav-item"><i class="fas fa-book fa-fw"></i> Recursos</a>
+        <a href="mensajes.html" class="nav-item"><i class="fas fa-envelope fa-fw"></i> Mensajes</a>
     </nav>
-    <div class="sidebar__divider sidebar__divider--bottom"></div>
-    <div class="sidebar__profile">
-        <div class="sidebar__avatar" style="background:#5DCAA5;color:#085041;">MR</div>
-        <div class="sidebar__user-info">
-            <p class="sidebar__user-name">Mario Ramírez</p>
-            <p class="sidebar__user-role">Profesor</p>
+    <div class="sidebar-footer">
+        <div class="avatar-sm">PR</div>
+        <div class="footer-info">
+            <div class="f-name">Prof. Ramírez</div>
+            <div class="f-role">Docente</div>
         </div>
+        <i class="fas fa-cog" style="opacity:0.5;cursor:pointer;font-size:0.85rem;"></i>
     </div>
 </aside>
 
+<!-- MAIN -->
 <main class="main-content">
-    <header class="topbar">
-        <button class="topbar__menu-toggle" id="menuToggle"><i class="ti ti-menu-2"></i></button>
-        <div class="topbar__title">
+    <div class="page-header">
+        <div>
             <h1>Consulta de Desafíos</h1>
-            <p class="topbar__breadcrumb">Dashboard &rsaquo; Desafíos</p>
+            <div class="breadcrumb"><a href="../services/index.html">Dashboard</a> › HU-12: Consulta de desafíos</div>
         </div>
-    </header>
+        <i class="fas fa-bell" style="font-size:1.1rem;color:var(--color-text-muted);cursor:pointer;"></i>
+    </div>
 
-    <div class="hu12-layout">
-        <section class="panel panel--challenges">
-            <div class="panel__header"><h2><i class="ti ti-trophy"></i> Desafíos</h2></div>
-            <ul class="challenge-cards" id="challengeList"></ul>
-        </section>
+    <div class="page-body">
 
-        <section class="panel panel--submissions">
-            <div class="panel__header"><h2 id="submissionsPanelTitle">Entregas</h2></div>
-            <div class="empty-state" id="emptyState"><p>Selecciona un desafío</p></div>
-            <ul class="submission-list" id="submissionList" style="display:none"></ul>
-        </section>
+        <!-- SUMMARY -->
+        <div class="summary-grid">
+            <div class="sum-card">
+                <div class="sum-icon red"><i class="fas fa-trophy"></i></div>
+                <div><div class="sum-val">8</div><div class="sum-lbl">Desafíos activos</div></div>
+            </div>
+            <div class="sum-card">
+                <div class="sum-icon orange"><i class="fas fa-clock"></i></div>
+                <div><div class="sum-val">23</div><div class="sum-lbl">Entregas pendientes</div></div>
+            </div>
+            <div class="sum-card">
+                <div class="sum-icon green"><i class="fas fa-check-circle"></i></div>
+                <div><div class="sum-val">41</div><div class="sum-lbl">Ya calificadas</div></div>
+            </div>
+            <div class="sum-card">
+                <div class="sum-icon blue"><i class="fas fa-star"></i></div>
+                <div><div class="sum-val">87.4</div><div class="sum-lbl">Promedio general</div></div>
+            </div>
+        </div>
 
-        <section class="panel panel--grader">
-            <div class="panel__header"><h2><i class="ti ti-eye"></i> Calificar</h2></div>
-            <div class="empty-state" id="graderEmpty"><p>Selecciona una entrega</p></div>
-            <div class="grader-content" id="graderContent" style="display:none">
-                <div class="student-info-bar">
-                    <div class="student-info-bar__avatar" id="graderAvatar"></div>
-                    <p class="student-info-bar__name" id="graderStudentName"></p>
-                </div>
-                <div class="code-viewer"><pre id="codeContent" style="padding: 16px; background: #282c34; color: #abb2bf; border-radius: 8px; overflow-x: auto;"></pre></div>
-                <div class="grade-form">
-                    <div class="grade-form__field">
-                        <label>Puntuación (0-100)</label>
-                        <input type="number" id="gradeInput" class="grade-form__input" min="0" max="100" />
-                    </div>
-                    <div class="grade-form__field">
-                        <label>Retroalimentación</label>
-                        <textarea id="feedbackInput" class="grade-form__textarea"></textarea>
-                    </div>
-                    <button class="btn btn--primary" id="saveGradeBtn">Guardar Calificación</button>
-                    <div id="gradeToast" style="display:none; color: green; margin-top: 10px;">¡Calificado con éxito!</div>
+        <!-- TABLA DESAFÍOS -->
+        <div class="section-card">
+            <div class="section-head">
+                <div class="section-head-left">
+                    <i class="fas fa-list-check"></i>
+                    <h3>Entregas de estudiantes</h3>
                 </div>
             </div>
-        </section>
+
+            <div class="filtros">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Buscar estudiante o desafío..." oninput="filtrar()">
+                </div>
+                <select class="filtro-select" id="filtroDesafio" onchange="filtrar()">
+                    <option value="">Todos los desafíos</option>
+                    <option value="Derivadas e integrales">Derivadas e integrales</option>
+                    <option value="Álgebra lineal">Álgebra lineal: matrices</option>
+                    <option value="Leyes de Newton">Leyes de Newton</option>
+                </select>
+                <select class="filtro-select" id="filtroEstado" onchange="filtrar()">
+                    <option value="">Todos los estados</option>
+                    <option value="pendiente">Pendiente de calificar</option>
+                    <option value="calificado">Calificado</option>
+                    <option value="sin-entrega">Sin entrega</option>
+                </select>
+            </div>
+
+            <div class="tabla-wrap">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Estudiante</th>
+                        <th>Desafío</th>
+                        <th>Materia</th>
+                        <th>Fecha límite</th>
+                        <th>Puntaje</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tablaBody">
+                    <tr data-desafio="Derivadas e integrales" data-estado="pendiente">
+                        <td><div class="student-cell"><div class="avatar-xs">AG</div>Ana García</div></td>
+                        <td><strong>Derivadas e integrales</strong></td>
+                        <td>Matemáticas Avanzadas</td>
+                        <td style="color:#e65100;font-weight:600;">Mañana</td>
+                        <td>—</td>
+                        <td><span class="badge badge-pending">Pendiente</span></td>
+                        <td><div class="btns-cell">
+                            <button class="btn-sm btn-primary" onclick="abrirModal('Ana García','Derivadas e integrales','Mañana','pendiente','// Solución de Ana:\nfunction derivada(f, x, h=0.0001) {\n    return (f(x + h) - f(x)) / h;\n}\n\nconst f = x => x**3 + 2*x;\nconsole.log(derivada(f, 2));')">Ver entrega</button>
+                        </div></td>
+                    </tr>
+                    <tr data-desafio="Derivadas e integrales" data-estado="calificado">
+                        <td><div class="student-cell"><div class="avatar-xs" style="background:#1565c0;">CM</div>Carlos Mendoza</div></td>
+                        <td><strong>Derivadas e integrales</strong></td>
+                        <td>Matemáticas Avanzadas</td>
+                        <td>Hace 2 días</td>
+                        <td><span class="pts-chip">142 / 150</span></td>
+                        <td><span class="badge badge-graded">Calificado</span></td>
+                        <td><div class="btns-cell">
+                            <button class="btn-sm btn-outline" onclick="abrirModal('Carlos Mendoza','Derivadas e integrales','Hace 2 días','calificado','// Solución de Carlos:\nconst derivar = (fn, x) => {\n    const h = 1e-7;\n    return (fn(x + h) - fn(x)) / h;\n};\n\nconst g = x => Math.sin(x) + x**2;\nconsole.log(derivar(g, Math.PI));', 142)">Ver / Editar</button>
+                        </div></td>
+                    </tr>
+                    <tr data-desafio="Álgebra lineal" data-estado="pendiente">
+                        <td><div class="student-cell"><div class="avatar-xs" style="background:#2e7d32;">LR</div>Laura Ruiz</div></td>
+                        <td><strong>Álgebra lineal: matrices</strong></td>
+                        <td>Matemáticas Avanzadas</td>
+                        <td>En 7 días</td>
+                        <td>—</td>
+                        <td><span class="badge badge-pending">Pendiente</span></td>
+                        <td><div class="btns-cell">
+                            <button class="btn-sm btn-primary" onclick="abrirModal('Laura Ruiz','Álgebra lineal: matrices','En 7 días','pendiente','// Multiplicación de matrices:\nfunction matMul(A, B) {\n    const n = A.length;\n    const m = B[0].length;\n    const k = B.length;\n    const C = Array.from({length:n}, () => Array(m).fill(0));\n    for(let i=0;i<n;i++)\n        for(let j=0;j<m;j++)\n            for(let p=0;p<k;p++)\n                C[i][j] += A[i][p]*B[p][j];\n    return C;\n}')">Ver entrega</button>
+                        </div></td>
+                    </tr>
+                    <tr data-desafio="Leyes de Newton" data-estado="sin-entrega">
+                        <td><div class="student-cell"><div class="avatar-xs" style="background:#757575;">MP</div>Miguel Pérez</div></td>
+                        <td><strong>Leyes de Newton</strong></td>
+                        <td>Física General II</td>
+                        <td style="color:#c62828;font-weight:600;">Vencido</td>
+                        <td>—</td>
+                        <td><span class="badge badge-empty">Sin entrega</span></td>
+                        <td><div class="btns-cell">
+                            <button class="btn-sm btn-outline" disabled style="opacity:0.4;cursor:not-allowed;">Sin entrega</button>
+                        </div></td>
+                    </tr>
+                    <tr data-desafio="Leyes de Newton" data-estado="calificado">
+                        <td><div class="student-cell"><div class="avatar-xs" style="background:#e65100;">SO</div>Sofía Ortiz</div></td>
+                        <td><strong>Leyes de Newton</strong></td>
+                        <td>Física General II</td>
+                        <td>Hace 1 día</td>
+                        <td><span class="pts-chip">195 / 200</span></td>
+                        <td><span class="badge badge-graded">Calificado</span></td>
+                        <td><div class="btns-cell">
+                            <button class="btn-sm btn-outline" onclick="abrirModal('Sofía Ortiz','Leyes de Newton','Hace 1 día','calificado','// Segunda ley de Newton - Simulación:\nclass Particula {\n    constructor(masa, posicion, velocidad) {\n        this.m = masa;\n        this.pos = posicion;\n        this.vel = velocidad;\n    }\n    aplicarFuerza(F, dt) {\n        const a = F / this.m;\n        this.vel += a * dt;\n        this.pos += this.vel * dt;\n    }\n}\n\nconst p = new Particula(2, 0, 0);\np.aplicarFuerza(10, 0.1);\nconsole.log(p.pos, p.vel);', 195)">Ver / Editar</button>
+                        </div></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 </main>
 
-<div class="sidebar-overlay" id="sidebarOverlay"></div>
-<script src="../js/dashboard.js"></script>
+<!-- MODAL VER ENTREGA / CALIFICAR -->
+<div class="modal-overlay" id="modalOverlay" onclick="cerrarModal(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <h2 id="modalTitle">Entrega del estudiante</h2>
+            <button class="modal-close" onclick="cerrarModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-meta-grid">
+                <div class="meta-item"><label>Estudiante</label><span id="mEstudiante"></span></div>
+                <div class="meta-item"><label>Desafío</label><span id="mDesafio"></span></div>
+                <div class="meta-item"><label>Fecha límite</label><span id="mFecha"></span></div>
+                <div class="meta-item"><label>Estado</label><span id="mEstado"></span></div>
+            </div>
+
+            <h4 style="font-size:0.85rem;font-weight:700;color:var(--color-text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">
+                <i class="fas fa-code" style="margin-right:6px;"></i>Código enviado
+            </h4>
+            <div class="code-viewer" id="mCodigo"></div>
+
+            <div class="grade-form" id="gradeForm">
+                <h4><i class="fas fa-pen" style="color:var(--color-primary);margin-right:6px;"></i>Calificar entrega</h4>
+                <div class="form-row">
+                    <div class="form-field" style="max-width:180px;">
+                        <label>Puntuación (0–100)</label>
+                        <input type="number" id="gradeInput" min="0" max="100" placeholder="Ej. 85">
+                    </div>
+                </div>
+                <div class="form-field">
+                    <label>Retroalimentación</label>
+                    <textarea id="feedbackInput" placeholder="Escribe comentarios para el estudiante..."></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-lg btn-cancel" onclick="cerrarModal()">Cancelar</button>
+            <button class="btn-lg btn-save" id="btnGuardar" onclick="guardarCalificacion()">
+                <i class="fas fa-save" style="margin-right:6px;"></i>Guardar calificación
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+    <i class="fas fa-check-circle"></i>
+    <span>¡Calificado con éxito!</span>
+</div>
+
+<script>
+    let filaActual = null;
+
+    function abrirModal(estudiante, desafio, fecha, estado, codigo, puntaje = null) {
+        document.getElementById('mEstudiante').textContent = estudiante;
+        document.getElementById('mDesafio').textContent = desafio;
+        document.getElementById('mFecha').textContent = fecha;
+        document.getElementById('mEstado').textContent = estado === 'calificado' ? '✅ Calificado' : '⏳ Pendiente';
+        document.getElementById('mCodigo').textContent = codigo;
+        if (puntaje !== null) document.getElementById('gradeInput').value = puntaje;
+        else document.getElementById('gradeInput').value = '';
+        document.getElementById('feedbackInput').value = '';
+        document.getElementById('modalOverlay').classList.add('open');
+        filaActual = { estudiante, estado };
+    }
+
+    function cerrarModal(e) {
+        if (!e || e.target === document.getElementById('modalOverlay'))
+            document.getElementById('modalOverlay').classList.remove('open');
+    }
+
+    function guardarCalificacion() {
+        const pts = document.getElementById('gradeInput').value;
+        if (!pts || pts < 0 || pts > 100) {
+            document.getElementById('gradeInput').style.borderColor = '#c62828';
+            return;
+        }
+        document.getElementById('gradeInput').style.borderColor = '';
+        document.getElementById('modalOverlay').classList.remove('open');
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    function filtrar() {
+        const texto = document.getElementById('searchInput').value.toLowerCase();
+        const desafio = document.getElementById('filtroDesafio').value;
+        const estado = document.getElementById('filtroEstado').value;
+        document.querySelectorAll('#tablaBody tr').forEach(tr => {
+            const txt = tr.textContent.toLowerCase();
+            const td = tr.dataset.desafio || '';
+            const te = tr.dataset.estado || '';
+            const matchTxt = txt.includes(texto);
+            const matchD = !desafio || td.includes(desafio.split(':')[0]);
+            const matchE = !estado || te === estado;
+            tr.style.display = matchTxt && matchD && matchE ? '' : 'none';
+        });
+    }
+</script>
 </body>
 </html>

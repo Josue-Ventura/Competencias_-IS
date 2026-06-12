@@ -1,157 +1,646 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>HU-11: Progreso de Nivel | EduSystem IPN</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"/>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
-    <link rel="stylesheet" href="../css/variables.css"/>
-    <link rel="stylesheet" href="../css/layout.css"/>
-    <link rel="stylesheet" href="../css/components.css"/>
-    <link rel="stylesheet" href="../css/estudiante-progreso.css"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Progreso de Nivel | EduSystem</title>
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/estudiante-progreso.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ── Variables del sistema (copiadas de tu variables.css para autosuficiencia) ── */
+        :root {
+            --color-primary: #7B1F2E;
+            --color-primary-dark: #5a1520;
+            --color-primary-light: #9e2d40;
+            --color-bg: #f5f5f0;
+            --color-surface: #ffffff;
+            --color-text: #1a1a1a;
+            --color-text-muted: #6b6b6b;
+            --color-border: #e5e5e0;
+            --color-success: #2e7d32;
+            --color-warning: #e65100;
+            --color-info: #1565c0;
+            --sidebar-width: 220px;
+            --radius: 10px;
+            --shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--color-bg);
+            color: var(--color-text);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--color-primary-dark);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0; left: 0; bottom: 0;
+            z-index: 100;
+        }
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 22px 18px 18px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .sidebar-brand .brand-icon {
+            width: 34px; height: 34px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px;
+        }
+        .sidebar-brand span { font-size: 1rem; font-weight: 700; letter-spacing: 0.3px; }
+        .sidebar-user {
+            padding: 14px 18px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.78rem;
+        }
+        .sidebar-user .user-name { font-weight: 600; margin-bottom: 2px; }
+        .sidebar-user .user-role { opacity: 0.65; }
+        .sidebar-nav { flex: 1; padding: 10px 0; overflow-y: auto; }
+        .nav-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.5;
+            padding: 14px 18px 6px;
+        }
+        .nav-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 18px;
+            color: rgba(255,255,255,0.78);
+            text-decoration: none;
+            font-size: 0.88rem;
+            border-radius: 0;
+            transition: background 0.15s, color 0.15s;
+            cursor: pointer;
+            position: relative;
+        }
+        .nav-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
+        .nav-item.active {
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            font-weight: 600;
+        }
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 3px;
+            background: #fff;
+            border-radius: 0 3px 3px 0;
+        }
+        .nav-badge {
+            margin-left: auto;
+            background: var(--color-primary-light);
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 20px;
+        }
+        .sidebar-footer {
+            padding: 14px 18px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .avatar-sm {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem; font-weight: 700;
+        }
+        .footer-info { flex: 1; }
+        .footer-info .f-name { font-size: 0.83rem; font-weight: 600; }
+        .footer-info .f-role { font-size: 0.72rem; opacity: 0.6; }
+
+        /* ── MAIN ── */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            padding: 0;
+            min-height: 100vh;
+        }
+        .page-header {
+            background: var(--color-surface);
+            border-bottom: 1px solid var(--color-border);
+            padding: 18px 32px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .page-header h1 { font-size: 1.3rem; font-weight: 700; }
+        .breadcrumb { font-size: 0.78rem; color: var(--color-text-muted); margin-top: 2px; }
+        .breadcrumb a { color: var(--color-primary); text-decoration: none; }
+        .page-body { padding: 28px 32px; }
+
+        /* ── NIVEL CARD ── */
+        .nivel-hero {
+            background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 60%, var(--color-primary-light) 100%);
+            border-radius: var(--radius);
+            padding: 28px 32px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+        }
+        .nivel-badge {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            border: 3px solid rgba(255,255,255,0.4);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .nivel-badge .nivel-num { font-size: 2rem; font-weight: 800; line-height: 1; }
+        .nivel-badge .nivel-lbl { font-size: 0.65rem; opacity: 0.8; letter-spacing: 0.5px; }
+        .nivel-info { flex: 1; }
+        .nivel-info h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
+        .nivel-info .nivel-sub { opacity: 0.8; font-size: 0.88rem; margin-bottom: 14px; }
+        .xp-bar-wrap { background: rgba(255,255,255,0.2); border-radius: 20px; height: 10px; overflow: hidden; }
+        .xp-bar { background: #fff; border-radius: 20px; height: 100%; transition: width 0.6s ease; }
+        .xp-labels { display: flex; justify-content: space-between; font-size: 0.75rem; margin-top: 6px; opacity: 0.85; }
+        .nivel-stats { display: flex; gap: 20px; }
+        .nstat { text-align: center; }
+        .nstat .nval { font-size: 1.5rem; font-weight: 800; }
+        .nstat .nlbl { font-size: 0.72rem; opacity: 0.75; }
+
+        /* ── STATS GRID ── */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .stat-card {
+            background: var(--color-surface);
+            border-radius: var(--radius);
+            padding: 20px 22px;
+            box-shadow: var(--shadow);
+            display: flex; align-items: center; gap: 16px;
+        }
+        .stat-icon {
+            width: 46px; height: 46px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .stat-icon.green { background: #e8f5e9; color: var(--color-success); }
+        .stat-icon.orange { background: #fff3e0; color: var(--color-warning); }
+        .stat-icon.blue { background: #e3f2fd; color: var(--color-info); }
+        .stat-val { font-size: 1.6rem; font-weight: 800; }
+        .stat-lbl { font-size: 0.78rem; color: var(--color-text-muted); margin-top: 2px; }
+
+        /* ── LOGROS ── */
+        .section-card {
+            background: var(--color-surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .section-head {
+            padding: 16px 22px;
+            border-bottom: 1px solid var(--color-border);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .section-head h3 { font-size: 1rem; font-weight: 700; }
+        .section-head i { color: var(--color-primary); }
+        .logros-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+        }
+        .logro-item {
+            padding: 18px 22px;
+            display: flex; align-items: center; gap: 12px;
+            border-right: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-border);
+        }
+        .logro-item:nth-child(3n) { border-right: none; }
+        .logro-icon {
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        .logro-icon.gold { background: #fff8e1; color: #f9a825; }
+        .logro-icon.blue { background: #e3f2fd; color: #1565c0; }
+        .logro-icon.green { background: #e8f5e9; color: #2e7d32; }
+        .logro-icon.gray { background: #f5f5f5; color: #9e9e9e; }
+        .logro-name { font-size: 0.88rem; font-weight: 600; }
+        .logro-desc { font-size: 0.75rem; color: var(--color-text-muted); margin-top: 2px; }
+        .logro-item.bloqueado { opacity: 0.45; }
+
+        /* ── PROGRESO POR MATERIA ── */
+        .materia-list { padding: 4px 0; }
+        .materia-row {
+            padding: 16px 22px;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .materia-row:last-child { border-bottom: none; }
+        .materia-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .materia-name { font-weight: 600; font-size: 0.92rem; }
+        .materia-meta { font-size: 0.78rem; color: var(--color-text-muted); margin-top: 2px; }
+        .materia-pct { font-size: 0.88rem; font-weight: 700; color: var(--color-primary); }
+        .prog-bar { background: #f0f0f0; border-radius: 20px; height: 8px; overflow: hidden; }
+        .prog-fill { height: 100%; border-radius: 20px; transition: width 0.5s ease; }
+        .prog-fill.red { background: var(--color-primary); }
+        .prog-fill.green { background: #4caf50; }
+        .materia-counts { display: flex; gap: 16px; margin-top: 8px; font-size: 0.75rem; color: var(--color-text-muted); }
+
+        /* ── TABLA DESAFÍOS ── */
+        .tabla-desafios { width: 100%; border-collapse: collapse; }
+        .tabla-desafios th {
+            text-align: left;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--color-text-muted);
+            padding: 12px 16px;
+            border-bottom: 2px solid var(--color-border);
+            background: #fafafa;
+        }
+        .tabla-desafios td { padding: 13px 16px; border-bottom: 1px solid var(--color-border); font-size: 0.88rem; }
+        .tabla-desafios tr:last-child td { border-bottom: none; }
+        .tabla-desafios tr:hover td { background: #fafafa; }
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.73rem;
+            font-weight: 600;
+        }
+        .badge-pending { background: #fff3e0; color: #e65100; }
+        .badge-done { background: #e8f5e9; color: #2e7d32; }
+        .badge-late { background: #fce4ec; color: #c62828; }
+        .pts-chip { font-weight: 700; color: var(--color-primary); }
+        .tab-bar { display: flex; gap: 4px; padding: 14px 22px 0; }
+        .tab-btn {
+            padding: 8px 16px;
+            border: none; background: none;
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s;
+        }
+        .tab-btn.active { color: var(--color-primary); border-bottom-color: var(--color-primary); font-weight: 600; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
 </head>
 <body>
 
-<aside class="sidebar" id="sidebar">
-    <div class="sidebar__brand">
-        <div class="sidebar__logo"><i class="ti ti-school"></i></div>
-        <span class="sidebar__title">EduSystem</span>
+<!-- ══════════ SIDEBAR ══════════ -->
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <div class="brand-icon"><i class="fas fa-graduation-cap"></i></div>
+        <span>EduSystem</span>
     </div>
-    <p class="sidebar__subtitle">IPN</p>
-    <div class="sidebar__divider"></div>
-    <nav class="sidebar__nav">
-        <p class="sidebar__section-label">Estudiante</p>
-        <ul class="sidebar__menu">
-            <li class="sidebar__item"><a href="../index.html" class="sidebar__link"><i class="ti ti-layout-dashboard"></i><span>Dashboard</span></a></li>
-            <li class="sidebar__item"><a href="#" class="sidebar__link"><i class="ti ti-users-group"></i><span>Mis Grupos</span></a></li>
-            <li class="sidebar__item"><a href="#" class="sidebar__link"><i class="ti ti-trophy"></i><span>Desafíos</span><span class="badge badge--danger">3</span></a></li>
-            <li class="sidebar__item sidebar__item--active"><a href="estudiante-progreso.html" class="sidebar__link" aria-current="page"><i class="ti ti-chart-bar"></i><span>Mi Progreso</span></a></li>
-            <li class="sidebar__item"><a href="#" class="sidebar__link"><i class="ti ti-books"></i><span>Recursos</span></a></li>
-            <li class="sidebar__item"><a href="#" class="sidebar__link"><i class="ti ti-message-circle"></i><span>Mensajes</span></a></li>
-        </ul>
-        <p class="sidebar__section-label" style="margin-top:8px;">Otras vistas</p>
-        <ul class="sidebar__menu">
-            <li class="sidebar__item"><a href="profesor-desafios.html" class="sidebar__link"><i class="ti ti-chalkboard"></i><span>Vista Profesor</span></a></li>
-            <li class="sidebar__item"><a href="profesor-alumnos.html" class="sidebar__link"><i class="ti ti-users"></i><span>Gestión Alumnos</span></a></li>
-        </ul>
+    <div class="sidebar-user">
+        <div class="user-name">Ana García</div>
+        <div class="user-role">Estudiante · Nivel 5</div>
+    </div>
+    <nav class="sidebar-nav">
+        <div class="nav-label">Estudiante</div>
+        <a href="../index.html" class="nav-item"><i class="fas fa-th-large fa-fw"></i> Dashboard</a>
+        <a href="mis-grupos.html" class="nav-item"><i class="fas fa-users fa-fw"></i> Mis Grupos</a>
+        <a href="desafios.html" class="nav-item">
+            <i class="fas fa-trophy fa-fw"></i> Desafíos
+            <span class="nav-badge">3</span>
+        </a>
+        <a href="estudiante-progreso.html" class="nav-item active"><i class="fas fa-chart-line fa-fw"></i> Mi Progreso</a>
+        <a href="recursos.html" class="nav-item"><i class="fas fa-book fa-fw"></i> Recursos</a>
+        <a href="calificaciones.html" class="nav-item"><i class="fas fa-star fa-fw"></i> Calificaciones</a>
+        <a href="mensajes.html" class="nav-item">
+            <i class="fas fa-envelope fa-fw"></i> Mensajes
+            <span class="nav-badge">2</span>
+        </a>
+        <div class="nav-label">Otras vistas</div>
+        <a href="../services/profesor-alumnos.html" class="nav-item"><i class="fas fa-chalkboard-teacher fa-fw"></i> Vista Profesor</a>
+        <a href="gestion-alumnos.html" class="nav-item"><i class="fas fa-user-cog fa-fw"></i> Gestión Alumnos</a>
     </nav>
-    <div class="sidebar__divider sidebar__divider--bottom"></div>
-    <div class="sidebar__profile">
-        <div class="sidebar__avatar">AG</div>
-        <div class="sidebar__user-info">
-            <p class="sidebar__user-name">Ana García</p>
-            <p class="sidebar__user-role">Estudiante · Nivel 5</p>
+    <div class="sidebar-footer">
+        <div class="avatar-sm">AG</div>
+        <div class="footer-info">
+            <div class="f-name">Ana García</div>
+            <div class="f-role">Estudiante</div>
         </div>
-        <a href="#" class="sidebar__settings-btn"><i class="ti ti-settings"></i></a>
+        <i class="fas fa-cog" style="opacity:0.5;cursor:pointer;font-size:0.85rem;"></i>
     </div>
 </aside>
 
-<main class="main-content" id="main-content">
-    <header class="topbar">
-        <button class="topbar__menu-toggle" id="menuToggle"><i class="ti ti-menu-2"></i></button>
-        <div class="topbar__title">
+<!-- ══════════ CONTENIDO PRINCIPAL ══════════ -->
+<main class="main-content">
+    <div class="page-header">
+        <div>
             <h1>Mi Progreso de Nivel</h1>
-            <p class="topbar__breadcrumb">Dashboard › HU-11: Progreso de nivel</p>
+            <div class="breadcrumb"><a href="../index.html">Dashboard</a> › HU-11: Progreso de nivel</div>
         </div>
-        <div class="topbar__actions">
-            <button class="topbar__icon-btn"><i class="ti ti-bell"></i><span class="topbar__notif-dot"></span></button>
+        <i class="fas fa-bell" style="font-size:1.1rem;color:var(--color-text-muted);cursor:pointer;"></i>
+    </div>
+
+    <div class="page-body">
+
+        <!-- ── CARD NIVEL HERO ── -->
+        <div class="nivel-hero">
+            <div class="nivel-badge">
+                <span class="nivel-num">5</span>
+                <span class="nivel-lbl">NIVEL</span>
+            </div>
+            <div class="nivel-info">
+                <h2>Nivel Explorador</h2>
+                <p class="nivel-sub">Resuelve más desafíos para alcanzar el Nivel 6</p>
+                <div class="xp-bar-wrap">
+                    <div class="xp-bar" style="width: 60%;"></div>
+                </div>
+                <div class="xp-labels">
+                    <span>⚡ 1,240 XP actuales</span>
+                    <span>Siguiente: 1,400 XP</span>
+                </div>
+            </div>
+            <div class="nivel-stats">
+                <div class="nstat">
+                    <div class="nval">7</div>
+                    <div class="nlbl">Completados</div>
+                </div>
+                <div class="nstat">
+                    <div class="nval">4</div>
+                    <div class="nlbl">Pendientes</div>
+                </div>
+                <div class="nstat">
+                    <div class="nval">1,240</div>
+                    <div class="nlbl">Puntaje</div>
+                </div>
+            </div>
         </div>
-    </header>
 
-    <div class="hu11-layout">
+        <!-- ── STATS RÁPIDAS ── -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon green"><i class="fas fa-check-circle"></i></div>
+                <div>
+                    <div class="stat-val">7</div>
+                    <div class="stat-lbl">Desafíos completados</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon orange"><i class="fas fa-clock"></i></div>
+                <div>
+                    <div class="stat-val">4</div>
+                    <div class="stat-lbl">Pendientes</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon blue"><i class="fas fa-star"></i></div>
+                <div>
+                    <div class="stat-val">1,240</div>
+                    <div class="stat-lbl">Puntos totales</div>
+                </div>
+            </div>
+        </div>
 
-        <!-- HERO NIVEL (CA-2) -->
-        <section class="level-hero" aria-label="Nivel actual del estudiante">
-            <div class="level-badge">
-                <div class="level-badge__ring">
-                    <svg class="level-badge__svg" viewBox="0 0 140 140" width="140" height="140" aria-hidden="true">
-                        <circle cx="70" cy="70" r="58" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="10"/>
-                        <circle cx="70" cy="70" r="58" fill="none" stroke="var(--gold-200)" stroke-width="10"
-                                stroke-linecap="round" stroke-dasharray="262 102" stroke-dashoffset="91"
-                                class="level-ring-anim"/>
-                    </svg>
-                    <div class="level-badge__center">
-                        <p class="level-badge__number" id="levelNumber">5</p>
-                        <p class="level-badge__label">Nivel</p>
+        <!-- ── LOGROS ── -->
+        <div class="section-card">
+            <div class="section-head">
+                <i class="fas fa-medal"></i>
+                <h3>Logros obtenidos</h3>
+            </div>
+            <div class="logros-grid">
+                <div class="logro-item">
+                    <div class="logro-icon gold"><i class="fas fa-flag"></i></div>
+                    <div>
+                        <div class="logro-name">Primera entrega</div>
+                        <div class="logro-desc">Completaste tu primer desafío</div>
+                    </div>
+                </div>
+                <div class="logro-item">
+                    <div class="logro-icon blue"><i class="fas fa-fire"></i></div>
+                    <div>
+                        <div class="logro-name">Racha 7 días</div>
+                        <div class="logro-desc">7 días consecutivos activo</div>
+                    </div>
+                </div>
+                <div class="logro-item">
+                    <div class="logro-icon green"><i class="fas fa-star"></i></div>
+                    <div>
+                        <div class="logro-name">Puntaje perfecto</div>
+                        <div class="logro-desc">100/100 en un desafío</div>
+                    </div>
+                </div>
+                <div class="logro-item bloqueado">
+                    <div class="logro-icon gray"><i class="fas fa-lock"></i></div>
+                    <div>
+                        <div class="logro-name">Maratonista</div>
+                        <div class="logro-desc">Completa 20 desafíos</div>
+                    </div>
+                </div>
+                <div class="logro-item bloqueado">
+                    <div class="logro-icon gray"><i class="fas fa-lock"></i></div>
+                    <div>
+                        <div class="logro-name">Nivel 10</div>
+                        <div class="logro-desc">Alcanza el nivel 10</div>
+                    </div>
+                </div>
+                <div class="logro-item bloqueado">
+                    <div class="logro-icon gray"><i class="fas fa-lock"></i></div>
+                    <div>
+                        <div class="logro-name">Top estudiante</div>
+                        <div class="logro-desc">Primer lugar del grupo</div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="level-info">
-                <h2 class="level-info__title">Nivel <span id="levelNameText">Explorador</span></h2>
-                <p class="level-info__subtitle">Resuelve más desafíos para alcanzar el Nivel 6</p>
-                <!-- CA-1: Porcentaje completado -->
-                <div class="xp-bar-wrapper">
-                    <div class="xp-bar-labels">
-                        <span class="xp-bar-labels__current"><i class="ti ti-bolt"></i> <span id="currentXP">720</span> XP</span>
-                        <span class="xp-bar-labels__next">Siguiente: <span id="nextLevelXP">1,000</span> XP</span>
+        <!-- ── PROGRESO POR MATERIA ── -->
+        <div class="section-card">
+            <div class="section-head">
+                <i class="fas fa-chart-bar"></i>
+                <h3>Progreso por materia</h3>
+            </div>
+            <div class="materia-list">
+                <div class="materia-row">
+                    <div class="materia-header">
+                        <div>
+                            <div class="materia-name">Matemáticas Avanzadas</div>
+                            <div class="materia-meta">Prof. Ramírez</div>
+                        </div>
+                        <span class="materia-pct">78%</span>
                     </div>
-                    <div class="xp-bar__track" role="progressbar" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100" aria-label="72% hacia el siguiente nivel">
-                        <div class="xp-bar__fill" id="xpBarFill" style="width:72%"></div>
-                        <span class="xp-bar__pct">72%</span>
+                    <div class="prog-bar"><div class="prog-fill red" style="width:78%;"></div></div>
+                    <div class="materia-counts">
+                        <span><i class="fas fa-check-circle" style="color:#2e7d32;"></i> 6 completados</span>
+                        <span><i class="fas fa-book-open" style="color:#1565c0;"></i> 8 total</span>
                     </div>
                 </div>
-                <div class="level-stats">
-                    <div class="level-stat"><i class="ti ti-trophy"></i><span class="level-stat__val" id="totalCompleted">8</span><span class="level-stat__lbl">Completados</span></div>
-                    <div class="level-stat"><i class="ti ti-clock"></i><span class="level-stat__val" id="totalPending">3</span><span class="level-stat__lbl">Pendientes</span></div>
-                    <div class="level-stat"><i class="ti ti-star"></i><span class="level-stat__val" id="totalScore">1,240</span><span class="level-stat__lbl">Puntaje</span></div>
+                <div class="materia-row">
+                    <div class="materia-header">
+                        <div>
+                            <div class="materia-name">Física General II</div>
+                            <div class="materia-meta">Prof. Torres</div>
+                        </div>
+                        <span class="materia-pct">57%</span>
+                    </div>
+                    <div class="prog-bar"><div class="prog-fill green" style="width:57%;"></div></div>
+                    <div class="materia-counts">
+                        <span><i class="fas fa-check-circle" style="color:#2e7d32;"></i> 3 completados</span>
+                        <span><i class="fas fa-book-open" style="color:#1565c0;"></i> 6 total</span>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <div class="level-medals">
-                <p class="level-medals__title">Logros</p>
-                <div class="level-medals__grid">
-                    <div class="medal-item medal-item--gold"><i class="ti ti-medal"></i> Primera entrega</div>
-                    <div class="medal-item medal-item--green"><i class="ti ti-flame"></i> Racha 7 días</div>
-                    <div class="medal-item medal-item--blue"><i class="ti ti-star"></i> Puntaje perfecto</div>
-                </div>
+        <!-- ── MIS DESAFÍOS ── -->
+        <div class="section-card">
+            <div class="section-head">
+                <i class="fas fa-list-check"></i>
+                <h3>Mis desafíos</h3>
             </div>
-        </section>
+            <div class="tab-bar">
+                <button class="tab-btn active" onclick="switchTab(this,'tab-todos')">Todos</button>
+                <button class="tab-btn" onclick="switchTab(this,'tab-completados')">Completados</button>
+                <button class="tab-btn" onclick="switchTab(this,'tab-pendientes')">Pendientes</button>
+            </div>
 
-        <!-- PROGRESO POR MATERIA (CA-1) -->
-        <section aria-labelledby="subject-heading">
-            <div class="section-header">
-                <h2 id="subject-heading"><i class="ti ti-chart-bar"></i> Progreso por materia</h2>
-            </div>
-            <div class="subject-progress-grid" id="subjectProgressGrid">
-                <!-- Generado por progresoController.js -->
-            </div>
-        </section>
-
-        <!-- TABLA DESAFÍOS (CA-3: completo / pendiente) -->
-        <section class="challenges-section" aria-labelledby="challenges-table-heading">
-            <div class="section-header">
-                <h2 id="challenges-table-heading"><i class="ti ti-list-check"></i> Mis desafíos</h2>
-                <div class="filter-tabs" role="tablist">
-                    <button class="filter-tab filter-tab--active" data-filter="all">Todos</button>
-                    <button class="filter-tab" data-filter="complete"><i class="ti ti-circle-check"></i> Completados</button>
-                    <button class="filter-tab" data-filter="pending"><i class="ti ti-clock"></i> Pendientes</button>
-                </div>
-            </div>
-            <div class="challenges-table-wrapper">
-                <table class="challenges-table" aria-label="Mis desafíos con estado">
+            <!-- TAB TODOS -->
+            <div id="tab-todos" class="tab-content active">
+                <table class="tabla-desafios">
                     <thead>
                     <tr>
-                        <th scope="col">Desafío</th>
-                        <th scope="col">Materia</th>
-                        <th scope="col">Fecha límite</th>
-                        <th scope="col">Puntaje</th>
-                        <th scope="col">Estado</th>
+                        <th>Desafío</th>
+                        <th>Materia</th>
+                        <th>Fecha límite</th>
+                        <th>Puntaje</th>
+                        <th>Estado</th>
                     </tr>
                     </thead>
-                    <tbody id="challengesTableBody"></tbody>
+                    <tbody>
+                    <tr>
+                        <td><strong>Derivadas e integrales</strong></td>
+                        <td>Matemáticas Avanzadas</td>
+                        <td>Mañana</td>
+                        <td><span class="pts-chip">150 pts</span></td>
+                        <td><span class="badge badge-pending">Pendiente</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Leyes de Newton</strong></td>
+                        <td>Física General II</td>
+                        <td>En 3 días</td>
+                        <td><span class="pts-chip">200 pts</span></td>
+                        <td><span class="badge badge-pending">Pendiente</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Álgebra lineal: matrices</strong></td>
+                        <td>Matemáticas Avanzadas</td>
+                        <td>En 7 días</td>
+                        <td><span class="pts-chip">120 pts</span></td>
+                        <td><span class="badge badge-pending">Pendiente</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cinemática</strong></td>
+                        <td>Física General II</td>
+                        <td>Hace 5 días</td>
+                        <td><span class="pts-chip">180 pts</span></td>
+                        <td><span class="badge badge-done">Completado</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Límites y continuidad</strong></td>
+                        <td>Matemáticas Avanzadas</td>
+                        <td>Hace 10 días</td>
+                        <td><span class="pts-chip">160 pts</span></td>
+                        <td><span class="badge badge-done">Completado</span></td>
+                    </tr>
+                    </tbody>
                 </table>
             </div>
-        </section>
 
-    </div>
+            <!-- TAB COMPLETADOS -->
+            <div id="tab-completados" class="tab-content">
+                <table class="tabla-desafios">
+                    <thead>
+                    <tr><th>Desafío</th><th>Materia</th><th>Entregado</th><th>Puntaje</th><th>Estado</th></tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><strong>Cinemática</strong></td>
+                        <td>Física General II</td>
+                        <td>Hace 5 días</td>
+                        <td><span class="pts-chip">180 pts</span></td>
+                        <td><span class="badge badge-done">Completado</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Límites y continuidad</strong></td>
+                        <td>Matemáticas Avanzadas</td>
+                        <td>Hace 10 días</td>
+                        <td><span class="pts-chip">160 pts</span></td>
+                        <td><span class="badge badge-done">Completado</span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- TAB PENDIENTES -->
+            <div id="tab-pendientes" class="tab-content">
+                <table class="tabla-desafios">
+                    <thead>
+                    <tr><th>Desafío</th><th>Materia</th><th>Fecha límite</th><th>Puntaje</th><th>Acción</th></tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><strong>Derivadas e integrales</strong></td>
+                        <td>Matemáticas Avanzadas</td>
+                        <td style="color:#e65100;font-weight:600;">Mañana</td>
+                        <td><span class="pts-chip">150 pts</span></td>
+                        <td><a href="desafios.html" style="background:var(--color-primary);color:#fff;padding:5px 14px;border-radius:6px;text-decoration:none;font-size:0.8rem;font-weight:600;">Iniciar</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Leyes de Newton</strong></td>
+                        <td>Física General II</td>
+                        <td>En 3 días</td>
+                        <td><span class="pts-chip">200 pts</span></td>
+                        <td><a href="desafios.html" style="background:var(--color-primary);color:#fff;padding:5px 14px;border-radius:6px;text-decoration:none;font-size:0.8rem;font-weight:600;">Iniciar</a></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Álgebra lineal: matrices</strong></td>
+                        <td>Matemáticas Avanzadas</td>
+                        <td>En 7 días</td>
+                        <td><span class="pts-chip">120 pts</span></td>
+                        <td><a href="desafios.html" style="background:var(--color-primary);color:#fff;padding:5px 14px;border-radius:6px;text-decoration:none;font-size:0.8rem;font-weight:600;">Iniciar</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div><!-- /page-body -->
 </main>
 
-<div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
-<script src="../js/mockData.js"></script>
-<script src="../js/progresoController.js"></script>
-<script src="../js/dashboard.js"></script>
+<script>
+    function switchTab(btn, tabId) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(tabId).classList.add('active');
+    }
+</script>
 </body>
 </html>
